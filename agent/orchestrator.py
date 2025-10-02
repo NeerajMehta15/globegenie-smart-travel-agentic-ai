@@ -10,7 +10,6 @@ from langgraph import StateGraph, StateNode, DecisionNode, ParallelNode, START ,
 class Orchestrator:
     def __init__(self):
         # Initialize all agents
-        self.input_analyzer = InputAnalyzer()
         self.destination_researcher = DestinationResearcher()
         self.itinerary_planner = ItineraryPlanner()
         self.budget_analyzer = BudgetAnalyzer()
@@ -66,8 +65,32 @@ class Orchestrator:
     def _evaluate_destination_completeness(self, trip_state: TripState) -> str:
         """Decision logic: light_research vs full_research vs clarification_needed."""
         destination = TripState.get("destination", None)
-        pass
-    
+        preferences = TripState.get("preferences", [])
+
+        prompt = ChatPromptTemplate.from_messages([
+                                                    ("system", """You are an expert travel agent. Based on the user's input, determine if the destination and
+                                                    preferences are sufficiently specified for light research, or if full research is needed.
+                                                    If the destination is vague or missing, or if preferences are very general (e.g., "beach"),
+                                                    then full research is required. Respond only with "light" or "full"."""),
+
+                                                    ("human", """User's destination: {destination}
+                                                    User's preferences: {preferences}
+                                                    Decide if light research or full research is needed."""),])
+        response = prompt.format(destination=destination, preferences=preferences)
+        decision = response.content.strip().lower()
+        if decision == "light":
+            return "light"
+        elif decision == "full":
+            return "full"
+        else:
+            raise ValueError("Invalid decision from destination completeness evaluation.")
+
+
+
+
+
+
+
     def _execute_destination_research(self, trip_state: TripState, research_type: str) -> TripState:
         """Execute destination research based on type."""
         pass
