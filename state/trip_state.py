@@ -14,7 +14,7 @@ class TripState(BaseModel):
     budget : float
     dates : dict 
     number_of_travelers : list
-    Trip_type : Literal["leisure", "business", "adventure", "cultural", "family", "romantic"]
+    trip_type : Literal["leisure", "business", "adventure", "cultural", "family", "romantic"]
     preferences : Literal["moutains", "beach", "city", "nature", "historical"]
 
     # Agent Progress
