@@ -6,6 +6,9 @@ from agent.travel_coordinator import TravelCoordinator
 from agent.feedback_handler import FeedbackHandler
 from core.optimization_loop import OptimizationLoop
 from langgraph import StateGraph, StateNode, DecisionNode, ParallelNode, START , END
+from core.llm_client import LLMClient
+from core.prompt_library import load_prompt
+
 
 class Orchestrator:
     def __init__(self):
@@ -16,6 +19,7 @@ class Orchestrator:
         self.travel_coordinator = TravelCoordinator()
         self.feedback_handler = FeedbackHandler()
         self.optimization_loop = OptimizationLoop()
+        self.llm_client = LLMClient()
     
     
     def orchestrate_trip_planning(self, trip_state: TripState) -> TripState:
@@ -64,31 +68,23 @@ class Orchestrator:
         
     def _evaluate_destination_completeness(self, trip_state: TripState) -> str:
         """Decision logic: light_research vs full_research vs clarification_needed."""
-        destination = TripState.get("destination", None)
-        preferences = TripState.get("preferences", [])
+        destination = trip_state.destination 
+        preferences = trip_state.preferences
+        
+        prompt_text = load_prompt("destination_completeness_evaluation.txt")
 
-        prompt = ChatPromptTemplate.from_messages([
-                                                    ("system", """You are an expert travel agent. Based on the user's input, determine if the destination and
-                                                    preferences are sufficiently specified for light research, or if full research is needed.
-                                                    If the destination is vague or missing, or if preferences are very general (e.g., "beach"),
-                                                    then full research is required. Respond only with "light" or "full"."""),
+        input_data = {'destination': destination, 'preferences': preferences}
+        prompt_format = self.llm_client._format_prompt(prompt_text, input_data)
 
-                                                    ("human", """User's destination: {destination}
-                                                    User's preferences: {preferences}
-                                                    Decide if light research or full research is needed."""),])
-        response = prompt.format(destination=destination, preferences=preferences)
-        decision = response.content.strip().lower()
-        if decision == "light":
+        response = self.llm_client.invoke(prompt_format)
+        formatted_response = self.llm_client._parse_json_response(response)
+
+        if formatted_response.get("decision") == "light":
             return "light"
-        elif decision == "full":
+        elif formatted_response.get("decision") == "full":
             return "full"
         else:
             raise ValueError("Invalid decision from destination completeness evaluation.")
-
-
-
-
-
 
 
     def _execute_destination_research(self, trip_state: TripState, research_type: str) -> TripState:
