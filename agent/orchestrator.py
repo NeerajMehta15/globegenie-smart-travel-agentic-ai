@@ -165,20 +165,18 @@ class Orchestrator:
 
     def _finalize_travel_plan(self, trip_state: TripState) -> TripState:
         """Create final polished travel plan."""
-        pass
+        try:
+            final_plan = self.travel_coordinator.coordinate(trip_state)
+            trip_state.final_plan = final_plan
+            trip_state.itinerary_status = "finalized"
+            trip_state.budget_status = "finalized"
+            return trip_state
+        except Exception as e:
+            print(f"Error in finalizing travel plan: {e}")
+            trip_state.itinerary_status = "finalization_failed"
+            trip_state.budget_status = "finalization_failed"
+            return trip_state
     
     def _handle_user_feedback(self, trip_state: TripState) -> TripState:
         """Process user satisfaction and determine next steps."""
-        pass
-    
-    def _validate_state(self, trip_state: TripState) -> bool:
-        """Validate TripState has required fields for next step."""
-        pass
-    
-    def _update_agent_status(self, trip_state: TripState, agent_name: str, status: str) -> TripState:
-        """Update agent progress status in TripState."""
-        pass
-    
-    def _check_early_termination(self, trip_state: TripState) -> bool:
-        """Check if workflow should terminate early (errors, impossible constraints)."""
         pass
