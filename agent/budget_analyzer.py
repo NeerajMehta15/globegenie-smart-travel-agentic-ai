@@ -6,7 +6,7 @@ class BudgetAnalyzer:
     def __init__(self):
         self.llm_client = LLMClient()
         
-    def analyze(self, trip_state: TripState) -> dict:
+    def analyze_budget(self, trip_state: TripState) -> dict:
         # Extract data
         destination = trip_state.destination 
         duration = trip_state.duration
