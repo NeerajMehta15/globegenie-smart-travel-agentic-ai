@@ -6,7 +6,7 @@ class ItineraryPlanner:
     def __init__(self):
         self.llm_client = LLMClient()
         
-    def plan(self, trip_state: TripState) -> list:
+    def plan(self, trip_state: TripState,optimization_context: dict = None) -> list:
         # Extract data from trip_state
         destination = trip_state.destination 
         preferences = trip_state.preferences
@@ -28,11 +28,14 @@ class ItineraryPlanner:
             'destination_research': destination_research
         }
         
+        #If optimization context is provided, include it
+        if optimization_context:
+            input_data.update(optimization_context)
+
         # Format and invoke LLM
         formatted_prompt = self.llm_client._format_prompt(prompt, input_data)
         response = self.llm_client.invoke(formatted_prompt)
         
         # Parse and return itinerary list
         itinerary = self.llm_client._parse_json_response(response)
-        
         return itinerary
