@@ -1,61 +1,44 @@
- #3. Recommendation Agent
-recommendation_template = ChatPromptTemplate.from_messages([
-    ("system", """You are a Travel Recommendation Specialist. Your job is to:
-    1. Enhance an existing travel itinerary with personalized recommendations
-    2. Suggest specific restaurants, attractions, and activities based on user interests
-    3. Add local insights that match the user's preferences
-    4. Ensure all recommendations maintain budget constraints
+from core.llm_client import LLMClient
+from core.prompt_library import load_prompt
+from state.trip_state import TripState
 
-    You will receive an itinerary and should return an ENHANCED version of that itinerary
-    with the same JSON structure but with added or improved activities and details.
 
-    The JSON structure should have these keys:
-    - destination: string
-    - days: array of day objects, each containing:
-      - date: string in YYYY-MM-DD format
-      - activities: array of activity objects, each containing:
-        - name: string
-        - description: string
-        - location: string
-        - duration_hours: number
-        - cost: number
-        - category: string
-        - suitable_for_interests: array of strings
-      - accommodation: string
-      - total_day_cost: number
-      - transportation: array of strings
-    - total_cost: number
-    - remaining_budget: number
+class TravelCoordinator:
+    def __init__(self):
+        self.llm_client = LLMClient()
+        
+    def coordinate(self, trip_state: TripState) -> dict:
+        destination = trip_state.destination
+        duration = trip_state.duration
+        dates = trip_state.dates
+        number_of_travelers = trip_state.number_of_travelers
+        trip_type = trip_state.trip_type
+        destination_research = trip_state.destination_research
+        itinerary_draft = trip_state.itinerary_draft
+        budget_breakdown = trip_state.budget_breakdown
 
-    Return ONLY valid JSON without any other text or explanation.
-    """),
-    ("human", """
-    Enhance this travel itinerary with personalized recommendations:
-    {itinerary_json}
+        # Load travel coordination prompt
+        prompt = load_prompt('travel_coordination_prompt.txt')
 
-    User constraints and preferences:
-    {constraints_json}
+        #Prepare input data
+        input_data = {
+            'destination': destination,
+            'duration': duration,
+            'dates': dates,
+            'number_of_travelers': number_of_travelers,
+            'trip_type': trip_type,
+            'destination_research': destination_research,
+            'itinerary_draft': itinerary_draft,
+            'budget_breakdown': budget_breakdown
+        }
 
-    Focus on providing specific, personalized recommendations that match their interests.
-    """),
-])
-
-def recommendation_node():
-    def enhance_with_recommendations(state: Dict[str, Any]) -> Dict[str, Any]:
-        constraints = state.get("constraints", {})
-        itinerary = state.get("itinerary", {})
-
+        # Format and invoke LLM
+        formatted_prompt = self.llm_client._format_prompt(prompt, input_data)
         try:
-            # Convert to JSON strings for the prompt
-            constraints_json = json.dumps(constraints)
-            itinerary_json = json.dumps(itinerary)
-
-            # Get enhanced recommendations
-            response = llm.invoke(recommendation_template.format_messages(constraints_json=constraints_json,itinerary_json=itinerary_json))
-
-            enhanced_itinerary = parse_json_from_llm(response.content)
-            return {"enhanced_itinerary": enhanced_itinerary, "status": "success"}
+            response = self.llm_client.invoke(formatted_prompt)
+            final_plan = self.llm_client._parse_json_response(response)
+            trip_state.final_plan = final_plan
+            return final_plan
         except Exception as e:
-            return {"error": str(e), "status": "error"}
-
-    return enhance_with_recommendations
+                print(f"Error in travel coordination: {e}")
+                return {"error": "Failed to generate final travel plan."}
