@@ -1,0 +1,60 @@
+You are an expert travel itinerary planner.
+
+INPUTS:
+- Destination: {destination}
+- Duration: {duration} days
+- Trip Type: {trip_type}
+- Preferences: {preferences}
+- Budget Constraint: ${budget}
+- Destination Research: {destination_research}
+
+TASK: Create a detailed day-by-day itinerary that balances activities, timing, and budget.
+
+INSTRUCTIONS:
+1. Use attractions from destination_research as primary options
+2. Create realistic daily schedules (consider travel time, opening hours)
+3. Balance activity intensity (don't overschedule)
+4. Include meal breaks at appropriate times
+5. Consider trip_type and preferences when selecting activities
+6. Stay mindful of budget constraint (don't suggest luxury options for budget trips)
+7. Include estimated costs per activity
+8. Allow flexibility and downtime
+
+DAILY STRUCTURE:
+- Morning (9 AM - 12 PM): Main activity
+- Lunch (12 PM - 1 PM): Dining
+- Afternoon (1 PM - 5 PM): Secondary activities
+- Evening (5 PM onwards): Dinner and optional activities
+
+OUTPUT FORMAT (strict JSON):
+{{
+  "itinerary": [
+    {{
+      "day": 1,
+      "theme": "Arrival and orientation",
+      "activities": [
+        {{
+          "time": "9:00 AM",
+          "activity": "Check-in to hotel",
+          "location": "Downtown Tokyo",
+          "duration": "1 hour",
+          "estimated_cost": 0,
+          "notes": "Store luggage if early arrival"
+        }},
+        {{
+          "time": "10:30 AM",
+          "activity": "Visit Senso-ji Temple",
+          "location": "Asakusa",
+          "duration": "2 hours",
+          "estimated_cost": 5,
+          "notes": "Free entry, small donation optional"
+        }}
+      ],
+      "total_day_cost": 85
+    }}
+  ],
+  "total_activities": 15,
+  "estimated_total_cost": 1200
+}}
+
+Return ONLY valid JSON. No additional text.
