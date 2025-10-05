@@ -1,5 +1,5 @@
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.schema import BaseMessage, BaseOutputParser
+from langchain_core.messages import BaseMessage, SystemMessage, HumanMessager
 from langchain_groq import ChatGroq
 from utils.config import Config
 from state.trip_state import TripState
