@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
-from utils.config import Config
+from utils.config import config
 from state.trip_state import TripState
 import json
 

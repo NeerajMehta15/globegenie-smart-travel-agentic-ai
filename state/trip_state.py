@@ -1,21 +1,22 @@
+from typing import Literal
 from pydantic import BaseModel
 
 class TripState(BaseModel):
     """
     Represents the state of a trip, including its status, start and end times, and any relevant metadata.
     """
-    #User input
-    raw_input : str
-    parsed_input : dict
+    # User input
+    raw_input: str
+    parsed_input: dict
 
-    #Trip details
-    destination : str
-    duration : int
-    budget : float
-    dates : dict 
-    number_of_travelers : list
-    trip_type : Literal["leisure", "business", "adventure", "cultural", "family", "romantic"]
-    preferences : Literal["moutains", "beach", "city", "nature", "historical"]
+    # Trip details
+    destination: str
+    duration: int
+    budget: float
+    dates: dict 
+    number_of_travelers: int  
+    trip_type: Literal["leisure", "business", "adventure", "cultural", "family", "romantic"]
+    preferences: list[Literal["mountains", "beach", "city", "nature", "historical"]] 
 
     # Agent Progress
     research_status: str
