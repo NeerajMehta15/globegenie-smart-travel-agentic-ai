@@ -1,5 +1,4 @@
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.messages import BaseMessage, SystemMessage, HumanMessager
 from langchain_groq import ChatGroq
 from utils.config import Config
 from state.trip_state import TripState
@@ -13,69 +12,67 @@ class input_analyzer:
     def analyze_input(self, user_input):
         '''Analyze user input to extract structured trip details.'''
         self.prompt_template = ChatPromptTemplate.from_messages([
-            BaseMessage(
-                role="system",
-                content="""
-                        You are an intelligent travel assistant. 
-                        Your job is to carefully analyze a user's trip request and extract structured trip details. 
-                        If any detail is not explicitly mentioned, use defaults or make a reasonable inference from the context.
+            (
+                "system",
+                """You are an intelligent travel assistant. 
+    Your job is to carefully analyze a user's trip request and extract structured trip details. 
+    If any detail is not explicitly mentioned, use defaults or make a reasonable inference from the context.
 
-                        ### Fields to extract:
-                        - destination: str  
-                        - Extract the city/country/region if mentioned.
-                        - If vague like "somewhere warm", map to a reasonable placeholder (e.g., "Tropical destination").
-                        - Default = "Not specified".
+    ### Fields to extract:
+    - destination: str  
+    - Extract the city/country/region if mentioned.
+    - If vague like "somewhere warm", map to a reasonable placeholder (e.g., "Tropical destination").
+    - Default = "Not specified".
 
-                        - duration: int (days)  
-                        - Look for keywords like "weekend", "2 weeks", "next 5 days".
-                        - If not defined, default = 7.
+    - duration: int (days)  
+    - Look for keywords like "weekend", "2 weeks", "next 5 days".
+    - If not defined, default = 7.
 
-                        - budget: float (USD)  
-                        - If the user says "budget trip" → 1000.
-                        - If "luxury trip" or "no budget constraint" → 5000.
-                        - If user mentions in INR/Euros, convert approx to USD.
-                        - Default = 1000.
+    - budget: float (USD)  
+    - If the user says "budget trip" → 1000.
+    - If "luxury trip" or "no budget constraint" → 5000.
+    - If user mentions in INR/Euros, convert approx to USD.
+    - Default = 1000.
 
-                        - dates: dict {"start_date": str, "end_date": str}  
-                        - Extract exact dates if given.
-                        - If user says "next month", resolve relative time.
-                        - Default = today's date as start_date, plus duration as end_date.
+    - dates: dict {{"start_date": str, "end_date": str}}  
+    - Extract exact dates if given.
+    - If user says "next month", resolve relative time.
+    - Default = today's date as start_date, plus duration as end_date.
 
-                        - number_of_travelers: int  
-                        - Detect from mentions like "me and my wife", "group of 4 friends".
-                        - Default = 2.
+    - number_of_travelers: int  
+    - Detect from mentions like "me and my wife", "group of 4 friends".
+    - Default = 2.
 
-                        - trip_type: Literal["leisure", "business", "adventure", "cultural", "family", "romantic"]  
-                        - Infer from intent:  
-                            - "honeymoon" : romantic  
-                            - "conference" : business  
-                            - "backpacking" : adventure  
-                            - "temples/museums" : cultural  
-                            - "with kids/parents" : family  
-                            - If not clear : leisure.
+    - trip_type: Literal["leisure", "business", "adventure", "cultural", "family", "romantic"]  
+    - Infer from intent:  
+        - "honeymoon" : romantic  
+        - "conference" : business  
+        - "backpacking" : adventure  
+        - "temples/museums" : cultural  
+        - "with kids/parents" : family  
+        - If not clear : leisure.
 
-                        - preferences: list[Literal["mountains", "beach", "city", "nature", "historical"]]  
-                        - Extract likes/dislikes.
-                        - If user says "relax by the ocean" : beach, "hike Himalayas" : mountains, "explore old forts" : historical.
-                        - Can have multiple values.
-                        - Default = [].
+    - preferences: list[Literal["mountains", "beach", "city", "nature", "historical"]]  
+    - Extract likes/dislikes.
+    - If user says "relax by the ocean" : beach, "hike Himalayas" : mountains, "explore old forts" : historical.
+    - Can have multiple values.
+    - Default = [].
 
-                        ### Output:
-                        Return the extracted information in **strict JSON format**:
-                        {
-                        "destination": "...",
-                        "duration": ...,
-                        "budget": ...,
-                        "dates": {"start_date": "...", "end_date": "..."},
-                        "number_of_travelers": ...,
-                        "trip_type": "...",
-                        "preferences": ["..."]
-                        }
-                                    """
+    ### Output:
+    Return the extracted information in **strict JSON format**:
+    {{
+    "destination": "...",
+    "duration": ...,
+    "budget": ...,
+    "dates": {{"start_date": "...", "end_date": "..."}},
+    "number_of_travelers": ...,
+    "trip_type": "...",
+    "preferences": ["..."]
+    }}"""
             ),
-            BaseMessage(
-                role="user",
-                content="Analyze this user input and extract trip details: {user_input}"
+            (
+                "user",
+                "Analyze this user input and extract trip details: {user_input}"
             ),
         ])
         return self.prompt_template
