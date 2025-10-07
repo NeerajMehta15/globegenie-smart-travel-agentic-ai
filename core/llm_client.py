@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
-from utils.config import Config
+from utils.config import config
 import json
 from typing import Any, Dict, Union
 
@@ -15,7 +15,7 @@ class LLMClient:
         self.temperature = temperature
         self.max_retries = max_retries
         self.llm = ChatGroq(
-            groq_api_key=Config.GROQ_API_KEY,
+            groq_api_key= config.GROQ_API_KEY,
             model=self.model, 
             temperature=self.temperature, 
             max_retries=self.max_retries,

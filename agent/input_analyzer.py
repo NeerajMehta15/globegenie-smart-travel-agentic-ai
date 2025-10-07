@@ -4,12 +4,14 @@ from utils.config import config
 from state.trip_state import TripState
 import json
 
-class input_analyzer:
-    def __init__(self,user_input : str = None):
+
+class InputAnalyzer: 
+    def __init__(self, user_input: str = None):
         self.user_input = user_input
         self.prompt_template = None
         
-    def analyze_input(self, user_input):
+
+    def analyze_input(self):
         '''Analyze user input to extract structured trip details.'''
         self.prompt_template = ChatPromptTemplate.from_messages([
             (
@@ -77,12 +79,13 @@ class input_analyzer:
         ])
         return self.prompt_template
     
-    def parse_response(self, user_input: str, prompt_template) -> dict:
+
+    def parse_response(self) -> str: 
         '''Parse the LLM response to extract structured trip details.'''
         try:
             formatted_prompt = self.prompt_template.format_messages(user_input=self.user_input)
             llm = ChatGroq(
-                groq_api_key=GROQ_API_KEY,
+                groq_api_key=config.GROQ_API_KEY,
                 model="llama-3.1-8b-instant",
                 temperature=0.1,
                 max_tokens=None,
@@ -90,10 +93,12 @@ class input_analyzer:
                 max_retries=2
             )
             response = llm.invoke(formatted_prompt)
-            return response
+            
+            return response.content
+            
         except Exception as e:
             print(f"Error parsing response: {e}")
-            return {}
+            return "" 
     
     def _parse_json_response(self, response_content: str) -> dict:
         """Simple JSON parser for LLM responses."""
@@ -126,8 +131,11 @@ class input_analyzer:
                 duration=extracted_data.get('duration', 7),
                 budget=extracted_data.get('budget', 1000.0),
                 dates=extracted_data.get('dates', {}),
-                number_of_travelers=extracted_data.get('number_of_travelers', [2]),
-                Trip_type=extracted_data.get('trip_type', 'leisure'),
+                
+                number_of_travelers=extracted_data.get('number_of_travelers', 2),  # Was: [2]
+                
+                trip_type=extracted_data.get('trip_type', 'leisure'), 
+                
                 preferences=extracted_data.get('preferences', ['city']),
                 
                 # Agent progress - initialize as pending
@@ -162,8 +170,8 @@ class input_analyzer:
                 duration=7,
                 budget=1000.0,
                 dates={},
-                number_of_travelers=[2],
-                Trip_type="leisure",
+                number_of_travelers=2, 
+                trip_type="leisure",
                 preferences=["city"],
                 research_status="pending",
                 itinerary_status="pending",
@@ -178,12 +186,15 @@ class input_analyzer:
                 user_satisfaction="neutral",
                 feedback_notes=""
             )
-    
-    
-    def process_input(self, user_input: str) -> TripState:
+
+    def process_input(self, user_input: str = None) -> TripState:  
         '''Main method to process user input and return TripState.'''
-        prompt_template = self.analyze_input(user_input)
-        response_content = self.parse_response(user_input, prompt_template)
+        
+        if user_input is not None:
+            self.user_input = user_input
+
+        prompt_template = self.analyze_input() 
+        response_content = self.parse_response()
         extracted_data = self._parse_json_response(response_content)
         trip_state = self.save_to_state(extracted_data)
         return trip_state

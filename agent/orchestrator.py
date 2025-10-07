@@ -3,9 +3,7 @@ from agent.destination_researcher import DestinationResearcher
 from agent.itinerary_planner import ItineraryPlanner
 from agent.budget_analyzer import BudgetAnalyzer
 from agent.travel_coordinator import TravelCoordinator
-from agent.feedback_handler import FeedbackHandler
-from core.optimization_loop import OptimizationLoop
-from langgraph import StateGraph, StateNode, DecisionNode, ParallelNode, START , END
+from langgraph.graph import StateGraph, START, END
 from core.llm_client import LLMClient
 from core.prompt_library import load_prompt
 
@@ -17,8 +15,6 @@ class Orchestrator:
         self.itinerary_planner = ItineraryPlanner()
         self.budget_analyzer = BudgetAnalyzer()
         self.travel_coordinator = TravelCoordinator()
-        self.feedback_handler = FeedbackHandler()
-        self.optimization_loop = OptimizationLoop()
         self.llm_client = LLMClient()
     
     
@@ -34,7 +30,6 @@ class Orchestrator:
             workflow.add_node('parallel_planning', self._execute_parallel_planning)
             workflow.add_node('optimization_loop', self._run_optimization_loop)
             workflow.add_node('finalization', self._finalize_travel_plan)
-            workflow.add_node('feedback_handling', self.feedback_handler)
             
             # Add edges - workflow flow
             workflow.add_conditional_edges(
@@ -49,8 +44,8 @@ class Orchestrator:
             workflow.add_edge('full_research', 'parallel_planning')
             workflow.add_edge('parallel_planning', 'optimization_loop')
             workflow.add_edge('optimization_loop', 'finalization')
-            workflow.add_edge('finalization', 'feedback_handling')
-            workflow.add_edge('feedback_handling', END)
+            workflow.add_edge('finalization', END)
+
             
             # Compile workflow
             app = workflow.compile()
@@ -71,7 +66,7 @@ class Orchestrator:
         destination = trip_state.destination 
         preferences = trip_state.preferences
         
-        prompt_text = load_prompt("destination_completeness_evaluation.txt")
+        prompt_text = load_prompt("destination_evaluation_prompt.txt")
 
         input_data = {'destination': destination, 'preferences': preferences}
         prompt_format = self.llm_client._format_prompt(prompt_text, input_data)
