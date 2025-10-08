@@ -26,17 +26,20 @@ class LLMClient:
         """Format prompt template with input data."""
         try:
             if isinstance(prompt_template, ChatPromptTemplate):
+                # If already a LangChain prompt, just format it with inputs
                 formatted_prompt = prompt_template.format_messages(**input_data)
             else:
-                prompt = ChatPromptTemplate.from_messages([
-                    ('system', prompt_template),
-                    ('user', '{user_input}')
-                ])
-                formatted_prompt = prompt.format_messages(**input_data)
+                formatted_text = prompt_template.format(**input_data)
+                
+                from langchain.schema import HumanMessage
+                formatted_prompt = [HumanMessage(content=formatted_text)]
+
             return formatted_prompt
+
         except Exception as e:
             print(f"Error formatting prompt: {e}")
             return None
+
     
     def invoke(self, formatted_prompt: Any) -> str:
         """Call LLM and return raw response string."""

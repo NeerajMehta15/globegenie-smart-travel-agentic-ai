@@ -28,14 +28,14 @@ Example: "Bali" + preferences ["beach", "nature"] → specific, light research s
 
 OUTPUT:
 Return ONLY valid JSON in this exact format:
-{
+{{
   "decision": "light"
-}
+}}
 
 OR
 
-{
+{{
   "decision": "full"
-}
+}}
 
 Do not include any explanation or additional text. Only return the JSON object with either "light" or "full" as the decision value.

@@ -94,7 +94,7 @@ class InputAnalyzer:
             )
             response = llm.invoke(formatted_prompt)
             
-            return response.content
+            return response
             
         except Exception as e:
             print(f"Error parsing response: {e}")
