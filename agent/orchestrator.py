@@ -98,12 +98,15 @@ class Orchestrator:
         """Execute itinerary and budget planning in parallel."""
         try:
             #Running itinerary planner
-            itininerary = self.itinerary_planner.plan(trip_state)
-            trip_state.itinerary = itininerary
+            itinerary = self.itinerary_planner.plan(trip_state)
+            if isinstance(itinerary, dict) and 'itinerary' in itinerary:
+                trip_state.itinerary_draft = itinerary['itinerary']
+            else:
+                trip_state.itinerary_draft = itinerary 
             trip_state.itinerary_status = "completed"
             #Running budget analyzer
             budget_analysis = self.budget_analyzer.analyze_budget(trip_state)
-            trip_state.budget_analysis = budget_analysis
+            trip_state.budget_breakdown = budget_analysis
             trip_state.budget_status = "completed"
             return trip_state
         except Exception as e:

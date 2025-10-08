@@ -50,19 +50,43 @@ class LLMClient:
             print(f"Error invoking LLM: {e}")
             return ""
     
+
     def _parse_json_response(self, response_content: str) -> dict:
         """Simple JSON parser for LLM responses."""
+        import re
+        import json
+        
         try:
             cleaned = response_content.strip()
+            
+            # Method 1: Try to extract from ```json blocks
             if '```json' in cleaned:
-                start = cleaned.find('```json') + 7
-                end = cleaned.find('```', start)
-                cleaned = cleaned[start:end].strip()
+                # Find everything between ```json and the next ```
+                pattern = r'```json\s*(.*?)\s*```'
+                match = re.search(pattern, cleaned, re.DOTALL)
+                if match:
+                    cleaned = match.group(1).strip()
             
-
-            return json.loads(cleaned)
+            # Method 2: If no markdown, find the JSON object
+            else:
+                # Find first { and last }
+                start = cleaned.find('{')
+                end = cleaned.rfind('}')
+                if start != -1 and end != -1:
+                    cleaned = cleaned[start:end + 1]
             
+            # Remove // comments
+            cleaned = re.sub(r'//.*', '', cleaned)
+            
+            # Parse and return
+            result = json.loads(cleaned)
+            return result
+            
+        except json.JSONDecodeError as e:
+            print(f"Failed to parse JSON: {response_content[:500]}...")
+            print(f"JSON Error: {e}")
+            return {}
         except Exception as e:
-            print(f"Failed to parse JSON: {response_content}")
+            print(f"Failed to parse JSON: {response_content[:500]}...")
             print(f"Error: {e}")
             return {}
