@@ -33,4 +33,5 @@ OUTPUT FORMAT (strict JSON):
   ]
 }}
 
-Return ONLY valid JSON. No additional text.
+
+CRITICAL: Return ONLY valid JSON. DO NOT include any explanatory text, comments, or markdown. DO NOT add // comments inside the JSON. Your entire response must be parseable by json.loads().

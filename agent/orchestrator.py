@@ -21,17 +21,21 @@ class Orchestrator:
     def orchestrate_trip_planning(self, trip_state: TripState) -> TripState:
         """Main orchestration method - coordinates the entire workflow."""
         try:
+            print("=== BUILDING WORKFLOW ===")
+            
             # Initialize workflow
             workflow = StateGraph(TripState)
             
-            # Add nodes
-            workflow.add_node('light_research', lambda state: self._execute_destination_research(state, 'light'))
-            workflow.add_node('full_research', lambda state: self._execute_destination_research(state, 'full'))
+            # Add nodes with debug
+            print("Adding nodes...")
+            workflow.add_node('light_research', self._execute_destination_research_light)
+            workflow.add_node('full_research', self._execute_destination_research_full)
             workflow.add_node('parallel_planning', self._execute_parallel_planning)
             workflow.add_node('optimization_loop', self._run_optimization_loop)
             workflow.add_node('finalization', self._finalize_travel_plan)
             
             # Add edges - workflow flow
+            print("Adding edges...")
             workflow.add_conditional_edges(
                 START,
                 self._evaluate_destination_completeness,
@@ -45,21 +49,37 @@ class Orchestrator:
             workflow.add_edge('parallel_planning', 'optimization_loop')
             workflow.add_edge('optimization_loop', 'finalization')
             workflow.add_edge('finalization', END)
-
             
             # Compile workflow
+            print("Compiling workflow...")
             app = workflow.compile()
             
             # Execute workflow
+            print("Executing workflow...")
+            print(f"Initial state - Budget: {trip_state.budget}, Destination: {trip_state.destination}")
+            
             result = app.invoke(trip_state)
             
             print("Workflow executed successfully!")
-            return result
-            
+            return trip_state
+                        
         except Exception as e:
             print(f"Error in workflow orchestration: {e}")
+            import traceback
+            traceback.print_exc()
             trip_state.research_status = "error"
             return trip_state
+
+
+    def _execute_destination_research_light(self, trip_state: TripState) -> TripState:
+        """Wrapper for light research"""
+        print("=== EXECUTING LIGHT RESEARCH ===")
+        return self._execute_destination_research(trip_state, 'light')
+
+    def _execute_destination_research_full(self, trip_state: TripState) -> TripState:
+        """Wrapper for full research"""
+        print("=== EXECUTING FULL RESEARCH ===")
+        return self._execute_destination_research(trip_state, 'full')
         
     def _evaluate_destination_completeness(self, trip_state: TripState) -> str:
         """Decision logic: light_research vs full_research vs clarification_needed."""

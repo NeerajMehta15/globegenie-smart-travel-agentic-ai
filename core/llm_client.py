@@ -11,7 +11,7 @@ class LLMClient:
                  max_tokens: int = None, max_retries: int = 2):
         """Initialize LLM client with configuration."""
         self.model = model
-        self.max_tokens = max_tokens
+        self.max_tokens = 4096
         self.temperature = temperature
         self.max_retries = max_retries
         self.llm = ChatGroq(
@@ -50,7 +50,6 @@ class LLMClient:
             print(f"Error invoking LLM: {e}")
             return ""
     
-
     def _parse_json_response(self, response_content: str) -> dict:
         """Simple JSON parser for LLM responses."""
         import re
@@ -59,30 +58,33 @@ class LLMClient:
         try:
             cleaned = response_content.strip()
             
-            # Method 1: Try to extract from ```json blocks
+            # Extract from markdown
             if '```json' in cleaned:
-                # Find everything between ```json and the next ```
-                pattern = r'```json\s*(.*?)\s*```'
-                match = re.search(pattern, cleaned, re.DOTALL)
-                if match:
-                    cleaned = match.group(1).strip()
+                start = cleaned.find('```json') + 7
+                end = cleaned.find('```', start)
+                cleaned = cleaned[start:end].strip()
             
-            # Method 2: If no markdown, find the JSON object
-            else:
-                # Find first { and last }
-                start = cleaned.find('{')
-                end = cleaned.rfind('}')
-                if start != -1 and end != -1:
-                    cleaned = cleaned[start:end + 1]
-            
-            # Remove // comments
+            # Remove comments
             cleaned = re.sub(r'//.*', '', cleaned)
             
-            # Parse and return
-            result = json.loads(cleaned)
-            return result
+            # Parse JSON
+            return json.loads(cleaned)
+            
         except json.JSONDecodeError as e:
+            print(f"JSON parse failed, attempting repair...")
+            
+            # Try truncating to last valid closing brace
+            try:
+                last_brace = cleaned.rfind('}')
+                if last_brace > 0:
+                    # Keep everything up to and including last }
+                    truncated = cleaned[:last_brace + 1]
+                    result = json.loads(truncated)
+                    print("Successfully repaired JSON by truncation")
+                    return result
+            except:
+                pass
+            
             print(f"Failed to parse JSON from content")
-            print(f"First 500 chars: {str(response_content)[:500]}")
-            print(f"JSON Error: {e}")
+            print(f"Error at: {str(e)[:200]}")
             return {}

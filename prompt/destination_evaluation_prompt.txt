@@ -38,4 +38,5 @@ OR
   "decision": "full"
 }}
 
-Do not include any explanation or additional text. Only return the JSON object with either "light" or "full" as the decision value.
+
+CRITICAL: Return ONLY valid JSON. DO NOT include any explanatory text, comments, or markdown. DO NOT add // comments inside the JSON. Your entire response must be parseable by json.loads().
