@@ -30,7 +30,7 @@ class TripState(BaseModel):
     
     # Decisions & Results
     destination_research: dict
-    itinerary_draft: list
+    itinerary_draft: dict
     budget_breakdown: dict
     final_plan: dict
     

@@ -79,7 +79,6 @@ class InputAnalyzer:
         ])
         return self.prompt_template
     
-
     def parse_response(self) -> str: 
         '''Parse the LLM response to extract structured trip details.'''
         try:
@@ -94,14 +93,16 @@ class InputAnalyzer:
             )
             response = llm.invoke(formatted_prompt)
             
-            return response
+            return response.content.strip()
             
         except Exception as e:
             print(f"Error parsing response: {e}")
             return "" 
-    
+
     def _parse_json_response(self, response_content: str) -> dict:
         """Simple JSON parser for LLM responses."""
+        import re
+        
         try:
             # Remove markdown code blocks if present
             cleaned = response_content.strip()
@@ -111,11 +112,15 @@ class InputAnalyzer:
                 end = cleaned.find('```', start)
                 cleaned = cleaned[start:end].strip()
             
+            # Remove single-line // comments (they break JSON)
+            cleaned = re.sub(r'//.*', '', cleaned)
+            
             # Parse JSON
             return json.loads(cleaned)
             
-        except:
-            print(f"Failed to parse JSON: {response_content}")
+        except Exception as e:
+            print(f"Failed to parse JSON: {e}")
+            print(f"Content was: {response_content[:200]}...")
             return {}
 
     def save_to_state(self, extracted_data: dict) -> TripState:
@@ -145,12 +150,12 @@ class InputAnalyzer:
                 
                 # Loop management - initialize
                 current_loop=0,
-                max_loops=5,  # default
+                max_loops=2,  # default
                 convergence_score=0.0,
                 
                 # Results - initialize as empty
                 destination_research={},
-                itinerary_draft=[],
+                itinerary_draft= {},
                 budget_breakdown={},
                 final_plan={},
                 
@@ -180,7 +185,7 @@ class InputAnalyzer:
                 max_loops=5,
                 convergence_score=0.0,
                 destination_research={},
-                itinerary_draft=[],
+                itinerary_draft={},
                 budget_breakdown={},
                 final_plan={},
                 user_satisfaction="neutral",

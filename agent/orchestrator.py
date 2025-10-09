@@ -99,10 +99,7 @@ class Orchestrator:
         try:
             #Running itinerary planner
             itinerary = self.itinerary_planner.plan(trip_state)
-            if isinstance(itinerary, dict) and 'itinerary' in itinerary:
-                trip_state.itinerary_draft = itinerary['itinerary']
-            else:
-                trip_state.itinerary_draft = itinerary 
+            trip_state.itinerary_draft = itinerary 
             trip_state.itinerary_status = "completed"
             #Running budget analyzer
             budget_analysis = self.budget_analyzer.analyze_budget(trip_state)

@@ -81,12 +81,8 @@ class LLMClient:
             # Parse and return
             result = json.loads(cleaned)
             return result
-            
         except json.JSONDecodeError as e:
-            print(f"Failed to parse JSON: {response_content[:500]}...")
+            print(f"Failed to parse JSON from content")
+            print(f"First 500 chars: {str(response_content)[:500]}")
             print(f"JSON Error: {e}")
-            return {}
-        except Exception as e:
-            print(f"Failed to parse JSON: {response_content[:500]}...")
-            print(f"Error: {e}")
             return {}

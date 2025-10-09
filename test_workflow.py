@@ -2,7 +2,7 @@ from agent.input_analyzer import InputAnalyzer
 from agent.orchestrator import Orchestrator
 
 # Test input
-user_input = "5-day beach vacation to Bali with $2000 budget for 2 people"
+user_input = "5-day beach vacation to Bali with $4000 budget for 2 people"
 
 # Run workflow
 analyzer = InputAnalyzer()
