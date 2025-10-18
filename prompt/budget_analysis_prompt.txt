@@ -65,4 +65,4 @@ VERIFICATION: Before returning, check that:
 - activities cost = sum of ALL estimated_cost fields in itinerary_draft
 - total_estimated_cost changes when itinerary changes (not always the same number!)
 
-Return ONLY valid JSON. No additional text.
+Return ONLY valid JSON. No additional text.git
