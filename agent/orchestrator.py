@@ -58,24 +58,38 @@ class Orchestrator:
             print("Executing workflow...")
             print(f"Initial state - Budget: {trip_state.budget}, Destination: {trip_state.destination}")
 
+            
             result = app.invoke(trip_state)
             print("Workflow executed successfully!")
 
-            # LangGraph returns the final state
+            # Debug: Check what result contains
+            print(f"Result type: {type(result)}")
+
+            # LangGraph returns dict with all state fields - convert back to TripState
+            if isinstance(result, dict):
+                # Create TripState from the dict
+                try:
+                    final_state = TripState(**result)  # Unpack dict into TripState
+                    print(f"Final state - Research: {final_state.research_status}, Itinerary: {final_state.itinerary_status}")
+                    return final_state
+                except Exception as e:
+                    print(f"Error converting result to TripState: {e}")
+                    return trip_state
+
+            # If result is already TripState
             if isinstance(result, TripState):
                 return result
-            elif isinstance(result, dict):
-                return result.get('__end__', trip_state)
-            else:
-                return result
-                        
-        except Exception as e:
+
+            # Fallback
+            print("WARNING: Unexpected result format")
+            return trip_state    
+        
+        except Exception as e: 
             print(f"Error in workflow orchestration: {e}")
             import traceback
             traceback.print_exc()
             trip_state.research_status = "error"
             return trip_state
-
 
     def _execute_destination_research_light(self, trip_state: TripState) -> TripState:
         """Wrapper for light research"""
