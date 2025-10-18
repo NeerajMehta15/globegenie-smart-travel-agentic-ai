@@ -8,42 +8,61 @@ INPUTS:
 - Destination Research Data: {destination_research}
 - Planned Itinerary: {itinerary_draft}
 
-TASK: Analyze the planned itinerary and provide detailed cost breakdown.
+TASK: Calculate actual costs based on the planned itinerary activities.
+
+CRITICAL CALCULATION METHOD:
+1. **Activities Cost**: Go through EACH day in itinerary_draft
+   - For each activity, use its "estimated_cost" field
+   - Sum ALL activity costs across all days
+   - This is your "activities" total
+   
+2. **Accommodation**: Use destination_research estimated_costs
+   - accommodation_per_night × duration × number_of_travelers
+   
+3. **Meals**: Check if meals are already in itinerary activities
+   - If yes: already counted in activities cost
+   - If no: use destination_research meals_per_day × duration × number_of_travelers
+   
+4. **Flights/Transportation**: Use destination_research estimates
+   
+5. **Local Transportation**: Use destination_research if available
+   
+6. **Miscellaneous**: 10% of subtotal
+
+IMPORTANT: Your total_estimated_cost MUST accurately reflect the itinerary.
+- If itinerary has mostly FREE activities, total should be LOW
+- If itinerary has expensive activities, total should be HIGH
+- DO NOT use generic estimates - calculate from actual itinerary activities
 
 INSTRUCTIONS:
-1. Review each activity in the itinerary
-2. Estimate realistic costs for each component
-3. Consider number of travelers for scaling costs
-4. Use destination_research cost data as reference
-5. Calculate total estimated cost
-6. Compare against user's budget constraint
-7. Determine if over, within, or under budget
-8. Provide cost-saving recommendations if over budget
-
-COST CATEGORIES:
-- Flights/Transportation to destination
-- Accommodation (per night × duration)
-- Daily meals (breakfast, lunch, dinner × travelers)
-- Activities from itinerary (with specific costs)
-- Local transportation
-- Miscellaneous/buffer (10% of total)
+1. Extract ALL activity costs from itinerary_draft
+2. Sum them accurately
+3. Add accommodation, flights, meals (if not in itinerary), transport
+4. Calculate total
+5. Compare against user's budget constraint
+6. Determine if over, within, or under budget
+7. Provide cost-saving recommendations if over budget
 
 OUTPUT FORMAT (strict JSON):
 {{
-  "total_estimated_cost": 3500,
+  "total_estimated_cost": 2500,
   "breakdown": {{
     "flights": 1200,
-    "accommodation": 800,
-    "meals": 600,
-    "activities": 700,
-    "transportation": 150,
+    "accommodation": 560,
+    "meals": 420,
+    "activities": 210,
+    "transportation": 60,
     "miscellaneous": 50
   }},
-  "per_day_cost": 500,
-  "per_person_cost": 1750,
-  "budget_status": "over" | "within" | "under",
+  "per_day_cost": 357,
+  "per_person_cost": 1250,
+  "budget_status": "within",
   "budget_difference": 500,
-  "recommendations": ["Cut luxury dining", "Choose budget accommodation"]
+  "recommendations": []
 }}
+
+VERIFICATION: Before returning, check that:
+- activities cost = sum of ALL estimated_cost fields in itinerary_draft
+- total_estimated_cost changes when itinerary changes (not always the same number!)
 
 Return ONLY valid JSON. No additional text.

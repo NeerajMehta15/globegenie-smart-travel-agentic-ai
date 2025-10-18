@@ -193,6 +193,8 @@ class Orchestrator:
                 # Update trip_state for budget calculation
                 temp_state = trip_state.model_copy(update={'itinerary_draft': new_itinerary})
                 new_budget = self.budget_analyzer.analyze_budget(temp_state)
+
+                print(f"[BUDGET DEBUG] Budget analyzer returned: {new_budget.get('total_estimated_cost', 'MISSING')}")
                 
                 # Update for next iteration
                 trip_state = trip_state.model_copy(update={

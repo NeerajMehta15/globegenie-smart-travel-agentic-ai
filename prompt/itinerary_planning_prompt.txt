@@ -36,25 +36,25 @@ OUTPUT FORMAT (strict JSON):
         {{
           "time": "9:00 AM",
           "activity": "Check-in to hotel",
-          "location": "Downtown Tokyo",
+          "location": "Downtown",
           "duration": "1 hour",
           "estimated_cost": 0,
           "notes": "Store luggage if early arrival"
         }},
         {{
           "time": "10:30 AM",
-          "activity": "Visit Senso-ji Temple",
-          "location": "Asakusa",
+          "activity": "Visit local attraction",
+          "location": "City center",
           "duration": "2 hours",
-          "estimated_cost": 5,
-          "notes": "Free entry, small donation optional"
+          "estimated_cost": 10,
+          "notes": "Free or low-cost entry"
         }}
       ],
       "total_day_cost": 85
     }}
   ],
   "total_activities": 15,
-  "estimated_total_cost": 1200
+  "estimated_total_cost": 2800
 }}
 
 CRITICAL: Return ONLY valid JSON. DO NOT include any explanatory text, comments, or markdown. DO NOT add // comments inside the JSON. Your entire response must be parseable by json.loads().
