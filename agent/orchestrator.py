@@ -57,11 +57,17 @@ class Orchestrator:
             # Execute workflow
             print("Executing workflow...")
             print(f"Initial state - Budget: {trip_state.budget}, Destination: {trip_state.destination}")
-            
+
             result = app.invoke(trip_state)
-            
             print("Workflow executed successfully!")
-            return trip_state
+
+            # LangGraph returns the final state
+            if isinstance(result, TripState):
+                return result
+            elif isinstance(result, dict):
+                return result.get('__end__', trip_state)
+            else:
+                return result
                         
         except Exception as e:
             print(f"Error in workflow orchestration: {e}")
@@ -74,7 +80,9 @@ class Orchestrator:
     def _execute_destination_research_light(self, trip_state: TripState) -> TripState:
         """Wrapper for light research"""
         print("=== EXECUTING LIGHT RESEARCH ===")
-        return self._execute_destination_research(trip_state, 'light')
+        result = self._execute_destination_research(trip_state, 'light')
+        print(f"=== LIGHT RESEARCH COMPLETE - Status: {result.research_status} ===")
+        return result
 
     def _execute_destination_research_full(self, trip_state: TripState) -> TripState:
         """Wrapper for full research"""
@@ -103,78 +111,100 @@ class Orchestrator:
 
 
     def _execute_destination_research(self, trip_state: TripState, research_type: str) -> TripState:
-        """Execute destination research based on type."""
+        print(f">>> _execute_destination_research called with type: {research_type}")
+        
         try:
             research_results = self.destination_researcher.research(trip_state, research_type)
-            trip_state.destination_research = research_results
-            trip_state.research_status = "completed"
-            return trip_state
+            print(f">>> Research results received: {list(research_results.keys()) if research_results else 'EMPTY'}")
+            
+            # Return NEW state with updates
+            return trip_state.model_copy(update={
+                'destination_research': research_results,
+                'research_status': 'completed'
+            })
+            
         except Exception as e:
-            print(f"Error in destination research: {e}")
-            trip_state.research_status = "failed"
-            return trip_state
+            print(f">>> ERROR: {e}")
+            return trip_state.model_copy(update={'research_status': 'failed'})
     
     def _execute_parallel_planning(self, trip_state: TripState) -> TripState:
-        """Execute itinerary and budget planning in parallel."""
         try:
-            #Running itinerary planner
             itinerary = self.itinerary_planner.plan(trip_state)
-            trip_state.itinerary_draft = itinerary 
-            trip_state.itinerary_status = "completed"
-            #Running budget analyzer
             budget_analysis = self.budget_analyzer.analyze_budget(trip_state)
-            trip_state.budget_breakdown = budget_analysis
-            trip_state.budget_status = "completed"
-            return trip_state
+            
+            # Return NEW state
+            return trip_state.model_copy(update={
+                'itinerary_draft': itinerary,
+                'itinerary_status': 'completed',
+                'budget_breakdown': budget_analysis,
+                'budget_status': 'completed'
+            })
+            
         except Exception as e:
             print(f"Error in parallel planning: {e}")
-            trip_state.itinerary_status = "failed"
-            trip_state.budget_status = "failed"
-            return trip_state
+            return trip_state.model_copy(update={
+                'itinerary_status': 'failed',
+                'budget_status': 'failed'
+            })
     
     def _run_optimization_loop(self, trip_state: TripState) -> TripState:
         """Run the budget ↔ itinerary optimization loop."""
         _budget = trip_state.budget
         _itinerary_budget = trip_state.budget_breakdown.get('total_estimated_cost', 0)
+        current_loop = trip_state.current_loop  # Track locally
 
-        while trip_state.current_loop < trip_state.max_loops:
+        while current_loop < trip_state.max_loops:
+            # Check convergence
             if _itinerary_budget <= _budget * 1.05:
                 print("Itinerary budget within acceptable range. Optimization complete.")
-                trip_state.itinerary_status = "finalized"
-                trip_state.budget_status = "finalized"
-                trip_state.convergence_score = _budget / _itinerary_budget if _itinerary_budget > 0 else 1.0
-                return trip_state
-
+                return trip_state.model_copy(update={
+                    'itinerary_status': 'finalized',
+                    'budget_status': 'finalized',
+                    'convergence_score': _budget / _itinerary_budget if _itinerary_budget > 0 else 1.0,
+                    'current_loop': current_loop
+                })
+            
+            # Not converged - optimize
             try:
-                print(f"Optimization loop iteration {trip_state.current_loop + 1}: Current cost ${_itinerary_budget}, Target ${_budget}")
+                print(f"Optimization loop iteration {current_loop + 1}: Current cost ${_itinerary_budget}, Target ${_budget}")
                 
                 optimization_context = {
                     'current_cost': _itinerary_budget,
                     'cost_reduction_needed': _itinerary_budget - _budget
                 }
                 
-
-                trip_state.itinerary_draft = self.itinerary_planner.plan(trip_state, optimization_context)
+                # Get new itinerary and budget
+                new_itinerary = self.itinerary_planner.plan(trip_state, optimization_context)
                 
-
-                trip_state.budget_breakdown = self.budget_analyzer.analyze_budget(trip_state)
-                _itinerary_budget = trip_state.budget_breakdown.get('total_estimated_cost', 0)
+                # Update trip_state for budget calculation
+                temp_state = trip_state.model_copy(update={'itinerary_draft': new_itinerary})
+                new_budget = self.budget_analyzer.analyze_budget(temp_state)
                 
-
-                trip_state.current_loop += 1
+                # Update for next iteration
+                trip_state = trip_state.model_copy(update={
+                    'itinerary_draft': new_itinerary,
+                    'budget_breakdown': new_budget,
+                    'current_loop': current_loop + 1
+                })
+                
+                _itinerary_budget = new_budget.get('total_estimated_cost', 0)
+                current_loop += 1
                 
             except Exception as e:
-                print(f"Error during optimization iteration: {e}")
-                trip_state.itinerary_status = "optimization_failed"
-                trip_state.budget_status = "optimization_failed"
-                return trip_state
+                print(f"Error during optimization: {e}")
+                return trip_state.model_copy(update={
+                    'itinerary_status': 'optimization_failed',
+                    'budget_status': 'optimization_failed'
+                })
         
-
-        print(f"Optimization ended after {trip_state.current_loop} iterations. Best effort result.")
-        trip_state.itinerary_status = "optimized_partial"
-        trip_state.budget_status = "optimized_partial"
-        trip_state.convergence_score = _budget / _itinerary_budget if _itinerary_budget > 0 else 1.0
-        return trip_state
+        # Max loops reached
+        print(f"Optimization ended after {current_loop} iterations. Best effort result.")
+        return trip_state.model_copy(update={
+            'itinerary_status': 'optimized_partial',
+            'budget_status': 'optimized_partial',
+            'convergence_score': _budget / _itinerary_budget if _itinerary_budget > 0 else 1.0,
+            'current_loop': current_loop
+        })
 
 
 
@@ -182,15 +212,16 @@ class Orchestrator:
         """Create final polished travel plan."""
         try:
             final_plan = self.travel_coordinator.coordinate(trip_state)
-            trip_state.final_plan = final_plan
-            trip_state.itinerary_status = "finalized"
-            trip_state.budget_status = "finalized"
-            return trip_state
+            
+            return trip_state.model_copy(update={
+                'final_plan': final_plan
+            })
+            
         except Exception as e:
-            print(f"Error in finalizing travel plan: {e}")
-            trip_state.itinerary_status = "finalization_failed"
-            trip_state.budget_status = "finalization_failed"
-            return trip_state
+            print(f"Error finalizing travel plan: {e}")
+            return trip_state.model_copy(update={
+                'final_plan': {"error": "Failed to create final plan"}
+            })
     
     def _handle_user_feedback(self, trip_state: TripState) -> TripState:
         """Process user satisfaction and determine next steps."""
