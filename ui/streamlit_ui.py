@@ -44,7 +44,7 @@ st.markdown("""
     
     /* Main container - Dark Background */
     .main {
-        background-color: #0F172A;
+        background-color: #1C1917;
         color: #E2E8F0;
     }
     
@@ -75,7 +75,7 @@ st.markdown("""
     
     /* Gradient Header Box */
     .gradient-header {
-        background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+        background: linear-gradient(135deg, #D97757 0%, #C8613D 100%);
         padding: 2rem;
         border-radius: 16px;
         color: white;
@@ -98,10 +98,10 @@ st.markdown("""
     
     /* Feature Cards */
     .feature-card {
-        background: #1E293B;
+        background: #292524;
         border-radius: 12px;
         padding: 1.5rem;
-        border: 1px solid #334155;
+        border: 1px solid #44403C;
         transition: all 0.3s ease;
         height: 100%;
     }
@@ -128,7 +128,7 @@ st.markdown("""
     
     /* Button Styling */
     .stButton>button {
-        background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+        background: linear-gradient(135deg, #D97757 0%, #C8613D 100%);
         color: white;
         border-radius: 10px;
         padding: 0.75rem 2rem;
@@ -154,8 +154,8 @@ st.markdown("""
     .stTextArea>div>div>textarea,
     .stSelectbox>div>div>select,
     .stNumberInput>div>div>input {
-        background-color: #1E293B;
-        border: 2px solid #334155;
+        background-color: #292524;
+        border: 2px solid #44403C;
         border-radius: 8px;
         color: #E2E8F0;
         padding: 0.75rem;
@@ -165,7 +165,7 @@ st.markdown("""
     .stTextArea>div>div>textarea:focus,
     .stSelectbox>div>div>select:focus,
     .stNumberInput>div>div>input:focus {
-        border-color: #667EEA;
+        border-color: #D97757;
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
         background-color: #283548;
     }
@@ -191,11 +191,11 @@ st.markdown("""
     
     /* Slider */
     .stSlider>div>div>div>div {
-        background-color: #667EEA;
+        background-color: #D97757;
     }
     
     .stSlider>div>div>div {
-        background-color: #334155;
+        background-color: #44403C;
     }
     
     /* Radio Buttons */
@@ -204,20 +204,20 @@ st.markdown("""
     }
     
     .stRadio>div>label>div {
-        background-color: #1E293B;
-        border: 2px solid #334155;
+        background-color: #292524;
+        border: 2px solid #44403C;
         color: #E2E8F0;
     }
     
     .stRadio>div>label>div:hover {
-        border-color: #667EEA;
+        border-color: #D97757;
         background-color: #283548;
     }
     
     /* Multiselect */
     .stMultiselect>div>div>div {
-        background-color: #1E293B;
-        border: 2px solid #334155;
+        background-color: #292524;
+        border: 2px solid #44403C;
     }
     
     .stMultiselect span {
@@ -228,7 +228,7 @@ st.markdown("""
     [data-testid="stMetricValue"] {
         font-size: 2rem;
         font-weight: 700;
-        color: #667EEA;
+        color: #D97757;
     }
     
     [data-testid="stMetricLabel"] {
@@ -241,10 +241,10 @@ st.markdown("""
     }
     
     div[data-testid="stMetric"] {
-        background-color: #1E293B;
+        background-color: #292524;
         padding: 1rem;
         border-radius: 8px;
-        border: 1px solid #334155;
+        border: 1px solid #44403C;
     }
     
     /* Tabs */
@@ -254,8 +254,8 @@ st.markdown("""
     }
     
     .stTabs [data-baseweb="tab"] {
-        background-color: #1E293B;
-        border: 1px solid #334155;
+        background-color: #292524;
+        border: 1px solid #44403C;
         border-radius: 8px;
         color: #94A3B8;
         padding: 0.75rem 1.5rem;
@@ -268,15 +268,15 @@ st.markdown("""
     }
     
     .stTabs [data-baseweb="tab"][aria-selected="true"] {
-        background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+        background: linear-gradient(135deg, #D97757 0%, #C8613D 100%);
         color: white;
         border-color: transparent;
     }
     
     /* Expander */
     .streamlit-expanderHeader {
-        background-color: #1E293B;
-        border: 1px solid #334155;
+        background-color: #292524;
+        border: 1px solid #44403C;
         border-radius: 8px;
         color: #E2E8F0;
         font-weight: 600;
@@ -288,22 +288,22 @@ st.markdown("""
     }
     
     .streamlit-expanderContent {
-        background-color: #1E293B;
-        border: 1px solid #334155;
+        background-color: #292524;
+        border: 1px solid #44403C;
         border-top: none;
         border-radius: 0 0 8px 8px;
     }
     
     /* Alert Boxes */
     .stAlert {
-        background-color: #1E293B;
-        border: 1px solid #334155;
+        background-color: #292524;
+        border: 1px solid #44403C;
         border-radius: 8px;
         color: #E2E8F0;
     }
     
     div[data-baseweb="notification"] {
-        background-color: #1E293B;
+        background-color: #292524;
         border-left-width: 4px;
     }
     
@@ -316,7 +316,7 @@ st.markdown("""
     /* Info */
     .stInfo {
         background-color: rgba(102, 126, 234, 0.1);
-        border-left-color: #667EEA;
+        border-left-color: #D97757;
     }
     
     /* Warning */
@@ -333,8 +333,8 @@ st.markdown("""
     
     /* Sidebar */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
-        border-right: 1px solid #334155;
+        background: linear-gradient(180deg, #292524 0%, #1C1917 100%);
+        border-right: 1px solid #44403C;
     }
     
     [data-testid="stSidebar"] * {
@@ -343,22 +343,22 @@ st.markdown("""
     
     /* Progress Bar */
     .stProgress>div>div>div>div {
-        background: linear-gradient(90deg, #667EEA 0%, #764BA2 100%);
+        background: linear-gradient(90deg, #D97757 0%, #C8613D 100%);
     }
     
     .stProgress>div>div>div {
-        background-color: #334155;
+        background-color: #44403C;
     }
     
     /* Spinner */
     .stSpinner>div {
-        border-top-color: #667EEA;
+        border-top-color: #D97757;
     }
     
     /* Custom Info Box */
     .info-box {
         background-color: rgba(102, 126, 234, 0.1);
-        border-left: 4px solid #667EEA;
+        border-left: 4px solid #D97757;
         padding: 1rem;
         border-radius: 8px;
         margin: 1rem 0;
@@ -366,18 +366,18 @@ st.markdown("""
     }
     
     .info-box strong {
-        color: #A5B4FC;
+        color: #E88668;
     }
     
     /* Divider */
     hr {
-        border-color: #334155;
+        border-color: #44403C;
     }
     
     /* Download Button */
     .stDownloadButton>button {
-        background-color: #1E293B;
-        border: 2px solid #334155;
+        background-color: #292524;
+        border: 2px solid #44403C;
         color: #E2E8F0;
         border-radius: 8px;
         padding: 0.6rem 1.5rem;
@@ -386,7 +386,7 @@ st.markdown("""
     
     .stDownloadButton>button:hover {
         background-color: #283548;
-        border-color: #667EEA;
+        border-color: #D97757;
     }
     
     /* Form */
@@ -402,14 +402,14 @@ st.markdown("""
     
     /* Date Input */
     .stDateInput>div>div>input {
-        background-color: #1E293B;
-        border: 2px solid #334155;
+        background-color: #292524;
+        border: 2px solid #44403C;
         color: #E2E8F0;
     }
     
     /* Remove Streamlit branding color */
     .css-1d391kg, .css-fg4pbf {
-        background-color: #0F172A;
+        background-color: #1C1917;
     }
     
     /* Scrollbar */
@@ -419,7 +419,7 @@ st.markdown("""
     }
     
     ::-webkit-scrollbar-track {
-        background: #1E293B;
+        background: #292524;
     }
     
     ::-webkit-scrollbar-thumb {
@@ -433,7 +433,7 @@ st.markdown("""
     
     /* Chart styling */
     .stPlotlyChart {
-        background-color: #1E293B;
+        background-color: #292524;
         border-radius: 8px;
     }
     </style>
@@ -769,8 +769,8 @@ if generate_button:
         with progress_container:
             st.markdown("""
             <div style='background-color: rgba(102, 126, 234, 0.1); padding: 1.5rem; 
-                        border-radius: 12px; border-left: 4px solid #667EEA;'>
-                <h4 style='margin-top: 0; color: #A5B4FC;'>
+                        border-radius: 12px; border-left: 4px solid #D97757;'>
+                <h4 style='margin-top: 0; color: #E88668;'>
                     ✨ Creating Your Perfect Itinerary
                 </h4>
                 <p style='margin-bottom: 0; color: #CBD5E1;'>
@@ -943,8 +943,8 @@ if st.session_state.get('show_results', False) and st.session_state.final_state:
             "Experience the perfect blend of adventure and relaxation on this carefully curated journey.")
         
         st.markdown(f"""
-        <div style='background-color: #1E293B; padding: 1.5rem; 
-                    border-radius: 8px; border-left: 4px solid #667EEA;'>
+        <div style='background-color: #292524; padding: 1.5rem; 
+                    border-radius: 8px; border-left: 4px solid #D97757;'>
             <p style='font-size: 1.1rem; line-height: 1.7; margin: 0; color: #E2E8F0;'>
                 {trip_summary}
             </p>
@@ -970,10 +970,10 @@ if st.session_state.get('show_results', False) and st.session_state.final_state:
                         dest_cost = dest.get('estimated_cost', 0)
                         
                         st.markdown(f"""
-                        <div style='background-color: #1E293B; padding: 1.5rem; 
+                        <div style='background-color: #292524; padding: 1.5rem; 
                                     margin-bottom: 1rem; border-radius: 8px; 
-                                    border-left: 3px solid #667EEA;'>
-                            <h4 style='margin: 0 0 0.5rem 0; color: #A5B4FC;'>
+                                    border-left: 3px solid #D97757;'>
+                            <h4 style='margin: 0 0 0.5rem 0; color: #E88668;'>
                                 {i}. {dest_name}
                             </h4>
                             <p style='margin: 0.5rem 0; color: #CBD5E1;'>
@@ -1030,10 +1030,10 @@ if st.session_state.get('show_results', False) and st.session_state.final_state:
                             activity_notes = activity.get('notes', '')
                             
                             st.markdown(f"""
-                            <div style='background-color: #1E293B; padding: 1rem; 
+                            <div style='background-color: #292524; padding: 1rem; 
                                         margin-bottom: 1rem; border-radius: 8px; 
-                                        border-left: 3px solid #667EEA;'>
-                                <h4 style='margin: 0 0 0.5rem 0; color: #A5B4FC;'>
+                                        border-left: 3px solid #D97757;'>
+                                <h4 style='margin: 0 0 0.5rem 0; color: #E88668;'>
                                     ⏰ {activity_time} - {activity_name}
                                 </h4>
                                 <p style='margin: 0.25rem 0; color: #94A3B8;'>
@@ -1047,7 +1047,7 @@ if st.session_state.get('show_results', False) and st.session_state.final_state:
                     
                     st.markdown(f"""
                     <div style='text-align: right; font-weight: 600; color: #10B981; 
-                                padding-top: 0.5rem; border-top: 2px solid #334155;'>
+                                padding-top: 0.5rem; border-top: 2px solid #44403C;'>
                         Total Day Cost: ${day_cost}
                     </div>
                     """, unsafe_allow_html=True)
@@ -1103,7 +1103,7 @@ if st.session_state.get('show_results', False) and st.session_state.final_state:
                     st.markdown(f"""
                     <div style='margin-bottom: 1rem;'>
                         <strong style='color: #CBD5E1;'>{category.replace('_', ' ').title()}</strong><br>
-                        <span style='font-size: 1.2rem; color: #667EEA;'>${amount}</span>
+                        <span style='font-size: 1.2rem; color: #D97757;'>${amount}</span>
                         <span style='color: #94A3B8;'> ({percentage:.1f}%)</span>
                     </div>
                     """, unsafe_allow_html=True)
