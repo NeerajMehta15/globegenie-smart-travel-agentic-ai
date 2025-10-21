@@ -186,7 +186,7 @@ st.markdown("""
     .stRadio>label,
     .stMultiselect>label,
     .stDateInput>label {
-        color: #1C1917 !important;
+        color: #FFFFFF !important;
         font-weight: 500 !important;
         font-size: 0.95rem !important;
     }
@@ -792,7 +792,7 @@ if generate_button:
                 <h4 style='margin-top: 0; color: #C8613D;'>
                     ✨ Creating Your Perfect Itinerary
                 </h4>
-                <p style='margin-bottom: 0; color: #292524;'>
+                <p style='margin-bottom: 0; color: #FFFFFF;'>
                     This may take 30-60 seconds. We're analyzing destinations, 
                     optimizing costs, and crafting personalized recommendations...
                 </p>
