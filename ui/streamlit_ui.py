@@ -31,9 +31,9 @@ st.set_page_config(
     }
 )
 
-# ==================== CUSTOM CSS STYLING - DARK THEME ====================
+# ==================== CUSTOM CSS STYLING - ANTHROPIC THEME ====================
 st.markdown("""
-    <style>
+ <style>
     /* Import Google Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
@@ -42,10 +42,10 @@ st.markdown("""
         font-family: 'Inter', sans-serif;
     }
     
-    /* Main container - Dark Background */
+    /* Main container - Soft Ivory Background */
     .main {
-        background-color: #1C1917;
-        color: #E2E8F0;
+        background-color: #FAF9F6;
+        color: #1C1917;
     }
     
     .block-container {
@@ -56,20 +56,20 @@ st.markdown("""
     
     /* Headers */
     h1 {
-        color: #F1F5F9;
+        color: #1C1917;
         font-weight: 700;
         padding-bottom: 0.5rem;
         letter-spacing: -0.5px;
     }
     
     h2 {
-        color: #E2E8F0;
+        color: #292524;
         font-weight: 600;
         padding-top: 1rem;
     }
     
     h3 {
-        color: #CBD5E1;
+        color: #292524;
         font-weight: 500;
     }
     
@@ -80,7 +80,7 @@ st.markdown("""
         border-radius: 16px;
         color: white;
         margin-bottom: 2rem;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 10px 40px rgba(217, 119, 87, 0.3);
     }
     
     .gradient-header h3 {
@@ -98,29 +98,29 @@ st.markdown("""
     
     /* Feature Cards */
     .feature-card {
-        background: #292524;
+        background: #FFFFFF;
         border-radius: 12px;
         padding: 1.5rem;
-        border: 1px solid #44403C;
+        border: 1px solid #E7E5E4;
         transition: all 0.3s ease;
         height: 100%;
     }
     
     .feature-card:hover {
-        background: #283548;
-        border-color: #475569;
+        background: #FFF7F3;
+        border-color: #D97757;
         transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 8px 24px rgba(217, 119, 87, 0.2);
     }
     
     .feature-card h3 {
-        color: #F1F5F9;
+        color: #1C1917;
         margin-top: 0;
         font-size: 1.1rem;
     }
     
     .feature-card p {
-        color: #94A3B8;
+        color: #44403C;
         font-size: 0.9rem;
         margin: 0;
         line-height: 1.6;
@@ -128,6 +128,7 @@ st.markdown("""
     
     /* Button Styling */
     .stButton>button {
+        /* CHANGED: Replaced red with orange gradient */
         background: linear-gradient(135deg, #D97757 0%, #C8613D 100%);
         color: white;
         border-radius: 10px;
@@ -135,13 +136,14 @@ st.markdown("""
         font-weight: 600;
         border: none;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 4px 15px rgba(217, 119, 87, 0.3);
         font-size: 1rem;
     }
     
     .stButton>button:hover {
-        background: linear-gradient(135deg, #5568D3 0%, #6941A8 100%);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        /* CHANGED: Replaced red hover with orange hover gradient */
+        background: linear-gradient(135deg, #E88668 0%, #D97757 100%);
+        box-shadow: 0 6px 20px rgba(217, 119, 87, 0.5);
         transform: translateY(-2px);
     }
     
@@ -154,10 +156,10 @@ st.markdown("""
     .stTextArea>div>div>textarea,
     .stSelectbox>div>div>select,
     .stNumberInput>div>div>input {
-        background-color: #292524;
-        border: 2px solid #44403C;
+        background-color: #FFFFFF;
+        border: 2px solid #E7E5E4;
         border-radius: 8px;
-        color: #E2E8F0;
+        color: #1C1917;
         padding: 0.75rem;
     }
     
@@ -166,13 +168,13 @@ st.markdown("""
     .stSelectbox>div>div>select:focus,
     .stNumberInput>div>div>input:focus {
         border-color: #D97757;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-        background-color: #283548;
+        box-shadow: 0 0 0 3px rgba(217, 119, 87, 0.1);
+        background-color: #FFF7F3;
     }
     
     .stTextInput>div>div>input::placeholder,
     .stTextArea>div>div>textarea::placeholder {
-        color: #64748B;
+        color: #A8A29E;
     }
     
     /* Labels */
@@ -184,18 +186,19 @@ st.markdown("""
     .stRadio>label,
     .stMultiselect>label,
     .stDateInput>label {
-        color: #CBD5E1 !important;
+        color: #1C1917 !important;
         font-weight: 500 !important;
         font-size: 0.95rem !important;
     }
     
     /* Slider */
     .stSlider>div>div>div>div {
-        background-color: #D97757;
+        /* CHANGED: Replaced red with orange for slider fill */
+        background-color: #D97757; 
     }
     
     .stSlider>div>div>div {
-        background-color: #44403C;
+        background-color: #E7E5E4;
     }
     
     /* Radio Buttons */
@@ -204,24 +207,33 @@ st.markdown("""
     }
     
     .stRadio>div>label>div {
-        background-color: #292524;
-        border: 2px solid #44403C;
-        color: #E2E8F0;
+        background-color: #FFFFFF;
+        border: 2px solid #E7E5E4;
+        color: #1C1917;
     }
     
     .stRadio>div>label>div:hover {
         border-color: #D97757;
-        background-color: #283548;
+        background-color: #FFF7F3;
     }
     
     /* Multiselect */
     .stMultiselect>div>div>div {
-        background-color: #292524;
-        border: 2px solid #44403C;
+        background-color: #FFFFFF;
+        border: 2px solid #E7E5E4;
     }
     
     .stMultiselect span {
-        color: #E2E8F0;
+        color: #1C1917;
+    }
+
+    /* Custom style for tags like "Local Cuisine", "Hiking" */
+    /* You might need to inspect the Streamlit HTML to target these precisely.
+       This is a generic class for demonstration. */
+    .st-chip-accent { /* This class would need to be applied manually or targeted more specifically */
+        background-color: #D97757 !important; /* Orange background */
+        color: white !important; /* White text for contrast */
+        border-color: #D97757 !important; /* Orange border */
     }
     
     /* Metric Cards */
@@ -232,19 +244,19 @@ st.markdown("""
     }
     
     [data-testid="stMetricLabel"] {
-        color: #94A3B8;
+        color: #44403C;
         font-weight: 500;
     }
     
     [data-testid="stMetricDelta"] {
-        color: #10B981;
+        color: #15803D;
     }
     
     div[data-testid="stMetric"] {
-        background-color: #292524;
+        background-color: #FFFFFF;
         padding: 1rem;
         border-radius: 8px;
-        border: 1px solid #44403C;
+        border: 1px solid #E7E5E4;
     }
     
     /* Tabs */
@@ -254,17 +266,17 @@ st.markdown("""
     }
     
     .stTabs [data-baseweb="tab"] {
-        background-color: #292524;
-        border: 1px solid #44403C;
+        background-color: #FFFFFF;
+        border: 1px solid #E7E5E4;
         border-radius: 8px;
-        color: #94A3B8;
+        color: #44403C;
         padding: 0.75rem 1.5rem;
         font-weight: 600;
     }
     
     .stTabs [data-baseweb="tab"]:hover {
-        background-color: #283548;
-        color: #E2E8F0;
+        background-color: #FFF7F3;
+        color: #1C1917;
     }
     
     .stTabs [data-baseweb="tab"][aria-selected="true"] {
@@ -275,47 +287,48 @@ st.markdown("""
     
     /* Expander */
     .streamlit-expanderHeader {
-        background-color: #292524;
-        border: 1px solid #44403C;
+        background-color: #FFFFFF;
+        border: 1px solid #E7E5E4;
         border-radius: 8px;
-        color: #E2E8F0;
+        color: #1C1917;
         font-weight: 600;
     }
     
     .streamlit-expanderHeader:hover {
-        background-color: #283548;
-        border-color: #475569;
+        background-color: #FFF7F3;
+        border-color: #D97757;
     }
     
     .streamlit-expanderContent {
-        background-color: #292524;
-        border: 1px solid #44403C;
+        background-color: #FFFFFF;
+        border: 1px solid #E7E5E4;
         border-top: none;
         border-radius: 0 0 8px 8px;
     }
     
     /* Alert Boxes */
     .stAlert {
-        background-color: #292524;
-        border: 1px solid #44403C;
+        background-color: #FFFFFF;
+        border: 1px solid #E7E5E4;
         border-radius: 8px;
-        color: #E2E8F0;
+        color: #1C1917;
     }
     
     div[data-baseweb="notification"] {
-        background-color: #292524;
+        background-color: #FFFFFF;
         border-left-width: 4px;
     }
     
     /* Success */
     .stSuccess {
-        background-color: rgba(16, 185, 129, 0.1);
-        border-left-color: #10B981;
+        background-color: rgba(21, 128, 61, 0.1);
+        border-left-color: #15803D;
     }
     
     /* Info */
     .stInfo {
-        background-color: rgba(102, 126, 234, 0.1);
+        /* CHANGED: Replaced red info accent with orange */
+        background-color: rgba(217, 119, 87, 0.1);
         border-left-color: #D97757;
     }
     
@@ -327,18 +340,25 @@ st.markdown("""
     
     /* Error */
     .stError {
-        background-color: rgba(239, 68, 68, 0.1);
-        border-left-color: #EF4444;
+        /* CHANGED: Replaced red error accent with orange (though typically error is red) */
+        background-color: rgba(217, 119, 87, 0.1); /* Using the primary accent orange */
+        border-left-color: #D97757; /* Using the primary accent orange */
     }
     
     /* Sidebar */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #292524 0%, #1C1917 100%);
-        border-right: 1px solid #44403C;
+        background: linear-gradient(180deg, #FFFFFF 0%, #FAF9F6 100%);
+        border-right: 1px solid #E7E5E4;
     }
     
     [data-testid="stSidebar"] * {
-        color: #E2E8F0;
+        color: #1C1917;
+    }
+    
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3 {
+        color: #1C1917;
     }
     
     /* Progress Bar */
@@ -347,7 +367,7 @@ st.markdown("""
     }
     
     .stProgress>div>div>div {
-        background-color: #44403C;
+        background-color: #E7E5E4;
     }
     
     /* Spinner */
@@ -357,35 +377,38 @@ st.markdown("""
     
     /* Custom Info Box */
     .info-box {
-        background-color: rgba(102, 126, 234, 0.1);
-        border-left: 4px solid #D97757;
-        padding: 1rem;
-        border-radius: 8px;
-        margin: 1rem 0;
-        color: #E2E8F0;
+        background-color: rgba(217, 119, 87, 0.15) !important;
+        border-left: 4px solid #D97757 !important;
+        padding: 1rem !important;
+        border-radius: 8px !important;
+        margin: 1rem 0 !important;
+        color: #FFD6B0 !important;        /* Strong orange for text */
+        font-weight: 500 !important;
+        box-shadow: 0 2px 8px rgba(217,119,87,0.08) !important;
     }
-    
+            
     .info-box strong {
-        color: #E88668;
+        color: #FFD6B0 !important; 
+        font-weight: 700 !important;
     }
     
     /* Divider */
     hr {
-        border-color: #44403C;
+        border-color: #E7E5E4;
     }
     
     /* Download Button */
     .stDownloadButton>button {
-        background-color: #292524;
-        border: 2px solid #44403C;
-        color: #E2E8F0;
+        background-color: #FFFFFF;
+        border: 2px solid #E7E5E4;
+        color: #1C1917;
         border-radius: 8px;
         padding: 0.6rem 1.5rem;
         font-weight: 600;
     }
     
     .stDownloadButton>button:hover {
-        background-color: #283548;
+        background-color: #FFF7F3;
         border-color: #D97757;
     }
     
@@ -397,19 +420,14 @@ st.markdown("""
     
     /* Checkbox */
     .stCheckbox>label>span {
-        color: #CBD5E1;
+        color: #292524;
     }
     
     /* Date Input */
     .stDateInput>div>div>input {
-        background-color: #292524;
-        border: 2px solid #44403C;
-        color: #E2E8F0;
-    }
-    
-    /* Remove Streamlit branding color */
-    .css-1d391kg, .css-fg4pbf {
-        background-color: #1C1917;
+        background-color: #FFFFFF;
+        border: 2px solid #E7E5E4;
+        color: #1C1917;
     }
     
     /* Scrollbar */
@@ -419,24 +437,25 @@ st.markdown("""
     }
     
     ::-webkit-scrollbar-track {
-        background: #292524;
+        background: #F5F5F4;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: #475569;
+        background: #D6D3D1;
         border-radius: 5px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: #64748B;
+        background: #A8A29E;
     }
     
     /* Chart styling */
     .stPlotlyChart {
-        background-color: #292524;
+        background-color: #FFFFFF;
         border-radius: 8px;
+        border: 1px solid #E7E5E4;
     }
-    </style>
+</style>
 """, unsafe_allow_html=True)
 
 # ==================== SESSION STATE INITIALIZATION ====================
@@ -768,12 +787,12 @@ if generate_button:
         
         with progress_container:
             st.markdown("""
-            <div style='background-color: rgba(102, 126, 234, 0.1); padding: 1.5rem; 
+            <div style='background-color: rgba(217, 119, 87, 0.1); padding: 1.5rem; 
                         border-radius: 12px; border-left: 4px solid #D97757;'>
-                <h4 style='margin-top: 0; color: #E88668;'>
+                <h4 style='margin-top: 0; color: #C8613D;'>
                     ✨ Creating Your Perfect Itinerary
                 </h4>
-                <p style='margin-bottom: 0; color: #CBD5E1;'>
+                <p style='margin-bottom: 0; color: #292524;'>
                     This may take 30-60 seconds. We're analyzing destinations, 
                     optimizing costs, and crafting personalized recommendations...
                 </p>
@@ -836,7 +855,7 @@ if st.session_state.get('show_results', False) and st.session_state.final_state:
     
     # Success header
     st.markdown("""
-    <div style='background: linear-gradient(135deg, #10B981 0%, #059669 100%); 
+    <div style='background: linear-gradient(135deg, #15803D 0%, #14532D 100%); 
                 padding: 1.5rem; border-radius: 12px; text-align: center;'>
         <h2 style='color: white; margin: 0;'>🎉 Your Travel Plan is Ready!</h2>
         <p style='margin: 0.5rem 0 0 0; color: white; opacity: 0.95;'>
@@ -943,9 +962,9 @@ if st.session_state.get('show_results', False) and st.session_state.final_state:
             "Experience the perfect blend of adventure and relaxation on this carefully curated journey.")
         
         st.markdown(f"""
-        <div style='background-color: #292524; padding: 1.5rem; 
-                    border-radius: 8px; border-left: 4px solid #D97757;'>
-            <p style='font-size: 1.1rem; line-height: 1.7; margin: 0; color: #E2E8F0;'>
+        <div style='background-color: #FFFFFF; padding: 1.5rem; 
+                    border-radius: 8px; border-left: 4px solid #D97757; border: 1px solid #E7E5E4;'>
+            <p style='font-size: 1.1rem; line-height: 1.7; margin: 0; color: #1C1917;'>
                 {trip_summary}
             </p>
         </div>
@@ -970,19 +989,19 @@ if st.session_state.get('show_results', False) and st.session_state.final_state:
                         dest_cost = dest.get('estimated_cost', 0)
                         
                         st.markdown(f"""
-                        <div style='background-color: #292524; padding: 1.5rem; 
+                        <div style='background-color: #FFFFFF; padding: 1.5rem; 
                                     margin-bottom: 1rem; border-radius: 8px; 
-                                    border-left: 3px solid #D97757;'>
-                            <h4 style='margin: 0 0 0.5rem 0; color: #E88668;'>
+                                    border-left: 3px solid #D97757; border: 1px solid #E7E5E4;'>
+                            <h4 style='margin: 0 0 0.5rem 0; color: #C8613D;'>
                                 {i}. {dest_name}
                             </h4>
-                            <p style='margin: 0.5rem 0; color: #CBD5E1;'>
+                            <p style='margin: 0.5rem 0; color: #1C1917;'>
                                 {dest_why}
                             </p>
-                            <p style='margin: 0.5rem 0 0 0; color: #94A3B8;'>
+                            <p style='margin: 0.5rem 0 0 0; color: #44403C;'>
                                 <strong>Top Attractions:</strong> {', '.join(dest_attractions) if dest_attractions else 'Various activities'}
                             </p>
-                            <p style='margin: 0.5rem 0 0 0; color: #10B981; font-weight: 600;'>
+                            <p style='margin: 0.5rem 0 0 0; color: #15803D; font-weight: 600;'>
                                 Estimated Cost: ${dest_cost}
                             </p>
                         </div>
@@ -1030,24 +1049,24 @@ if st.session_state.get('show_results', False) and st.session_state.final_state:
                             activity_notes = activity.get('notes', '')
                             
                             st.markdown(f"""
-                            <div style='background-color: #292524; padding: 1rem; 
+                            <div style='background-color: #FFFFFF; padding: 1rem; 
                                         margin-bottom: 1rem; border-radius: 8px; 
-                                        border-left: 3px solid #D97757;'>
-                                <h4 style='margin: 0 0 0.5rem 0; color: #E88668;'>
+                                        border-left: 3px solid #D97757; border: 1px solid #E7E5E4;'>
+                                <h4 style='margin: 0 0 0.5rem 0; color: #C8613D;'>
                                     ⏰ {activity_time} - {activity_name}
                                 </h4>
-                                <p style='margin: 0.25rem 0; color: #94A3B8;'>
+                                <p style='margin: 0.25rem 0; color: #1C1917;'>
                                     <strong>📍 Location:</strong> {activity_location}<br>
                                     <strong>⏱️ Duration:</strong> {activity_duration}<br>
                                     <strong>💵 Cost:</strong> ${activity_cost}
                                 </p>
-                                {f"<p style='margin: 0.5rem 0 0 0; font-style: italic; color: #64748B;'>💡 {activity_notes}</p>" if activity_notes else ''}
+                                {f"<p style='margin: 0.5rem 0 0 0; font-style: italic; color: #44403C;'>💡 {activity_notes}</p>" if activity_notes else ''}
                             </div>
                             """, unsafe_allow_html=True)
                     
                     st.markdown(f"""
-                    <div style='text-align: right; font-weight: 600; color: #10B981; 
-                                padding-top: 0.5rem; border-top: 2px solid #44403C;'>
+                    <div style='text-align: right; font-weight: 600; color: #15803D; 
+                                padding-top: 0.5rem; border-top: 2px solid #E7E5E4;'>
                         Total Day Cost: ${day_cost}
                     </div>
                     """, unsafe_allow_html=True)
@@ -1102,9 +1121,9 @@ if st.session_state.get('show_results', False) and st.session_state.final_state:
                     percentage = (amount / total) * 100 if total > 0 else 0
                     st.markdown(f"""
                     <div style='margin-bottom: 1rem;'>
-                        <strong style='color: #CBD5E1;'>{category.replace('_', ' ').title()}</strong><br>
+                        <strong style='color: #1C1917;'>{category.replace('_', ' ').title()}</strong><br>
                         <span style='font-size: 1.2rem; color: #D97757;'>${amount}</span>
-                        <span style='color: #94A3B8;'> ({percentage:.1f}%)</span>
+                        <span style='color: #44403C;'> ({percentage:.1f}%)</span>
                     </div>
                     """, unsafe_allow_html=True)
         else:
@@ -1368,10 +1387,10 @@ with footer_col3:
     """)
 
 st.markdown("""
-<div style='text-align: center; color: #64748B; padding: 2rem 0;'>
+<div style='text-align: center; color: #57534E; padding: 2rem 0;'>
     <p>Made with ❤️ using Streamlit | © 2024 GlobeGenie</p>
     <p style='font-size: 0.875rem;'>
         Powered by AI • Plan Smarter, Travel Better
     </p>
-</div>
+</div
 """, unsafe_allow_html=True)
