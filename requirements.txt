@@ -25,3 +25,7 @@ streamlit
 python-docx
 PyPDF2
 pypdf
+
+
+sqlalchemy>=2.0.0
+alembic>=1.12.0 
