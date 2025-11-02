@@ -31,7 +31,7 @@ class User:
     - Many trip states
     '''
 
-     __tablename__ = "users"
+    __tablename__ = "users"
     
     #Primary identifier for each users and other column details
     id = Column(Integer, primary_key=True, index=True)
@@ -55,6 +55,33 @@ class User:
     def __repr__(self):
        '''String representation of debugging purposes'''
        return f"<User(id={self.id}, email={self.email}, name={self.name})>"
+    
+# USER PROFILE MODEL - Stores travel preferences for personalized recommendations
+class UserProfile(Base):
+    """
+    Stores travel preferences for personalized recommendations.
+    
+    Each profile belongs to ONE user.
+    Used by ProfileAnalyzer agent to enhance destination research.
+    """
+    __tablename__ = "user_profiles"
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, unique=True)
+
+    #=============Travel preferences==================
+    travel_style = Column(String, default ="budget")          #E.g., luxury, budget, backpacker
+    budget_range = Column(String, default ="medium")          #E.g., low, medium, high
+    pace_preference = Column(String,default="moderate")
+    interests = Column(JSON, default=list)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    #=============Relationships==================
+    user = relationship("User", back_populates="profile")
+
+    def __repr__(self):
+        '''String representation for debugging purposes'''
+        return f"<UserProfile(user_id={self.user_id}, travel_style={self.travel_style})>"
+
 
 # TRIP HISTORY MODEL - Past trips for learning and reference
 class TripHistory(Base):
