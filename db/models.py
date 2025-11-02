@@ -23,10 +23,10 @@ INTEREST_CATEGORIES = [
 ]
 
 #Class for basic account information
-class User:
-    '''Database model for User accounts'
+class User(Base):  # ← ADDED (Base)
+    '''Database model for User accounts'''  # ← FIXED closing quote
     
-    One user has: 
+    '''One user has: 
     - One profile
     - Many trip states
     '''
@@ -35,19 +35,18 @@ class User:
     
     #Primary identifier for each users and other column details
     id = Column(Integer, primary_key=True, index=True)
-    email = Column(String,unique=True, index=True, nullable=False) #Nullable false to ensure email is always provided, index = True for faster lookups
+    email = Column(String,unique=True, index=True, nullable=False)
     name = Column(String, nullable=False)
     home_city = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
-    #Relationships,One-to-One with UserProfile, One-to-Many with TripState,userlist=False for only one profile per user,back_populates to link both sides of relationship,cascade to delete profile when user is deleted
+    #Relationships
     profile = relationship("UserProfile", 
                             back_populates="user",
                             uselist=False,
                             cascade="all, delete-orphan")
 
-    #One-to-Many relationship with TripState
     trip_history = relationship("TripHistory",
                                 back_populates="user",
                                 cascade="all, delete-orphan")
@@ -55,6 +54,7 @@ class User:
     def __repr__(self):
        '''String representation of debugging purposes'''
        return f"<User(id={self.id}, email={self.email}, name={self.name})>"
+
     
 # USER PROFILE MODEL - Stores travel preferences for personalized recommendations
 class UserProfile(Base):
@@ -65,6 +65,7 @@ class UserProfile(Base):
     Used by ProfileAnalyzer agent to enhance destination research.
     """
     __tablename__ = "user_profiles"
+    id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, unique=True)
 
     #=============Travel preferences==================
