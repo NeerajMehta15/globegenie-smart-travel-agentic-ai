@@ -1,5 +1,7 @@
 from typing import Literal
 from pydantic import BaseModel
+from db.models import UserProfile
+
 
 class TripState(BaseModel):
     """
@@ -37,3 +39,8 @@ class TripState(BaseModel):
     # User Feedback
     user_satisfaction: Literal["very satisfied", "satisfied", "neutral", "dissatisfied", "very dissatisfied"]
     feedback_notes: str
+
+    #User 
+    user_id: Optional[int]
+    user_profile: Optional[UserProfile]
+    personalization_context: Optional[Dict]
