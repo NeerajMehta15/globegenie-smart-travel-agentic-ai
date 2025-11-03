@@ -162,6 +162,11 @@ class InputAnalyzer:
                 # User feedback - initialize
                 user_satisfaction="neutral",
                 feedback_notes=""
+
+                #User profile and personalization context
+                user_id=None,  
+                user_profile=None, 
+                personalization_context=None
             )
             return trip_state
             
@@ -189,7 +194,10 @@ class InputAnalyzer:
                 budget_breakdown={},
                 final_plan={},
                 user_satisfaction="neutral",
-                feedback_notes=""
+                feedback_notes="",
+                user_id="",  
+                user_profile={}, 
+                personalization_context={}
             )
 
     def process_input(self, user_input: str = None) -> TripState:  

@@ -182,7 +182,7 @@ globegenie/
 
 ---
 
-## 🧩 Flow Chart
+## 🧩 Flow Chart (Phase 1)
 
 ```mermaid
 graph TD
@@ -218,4 +218,75 @@ graph TD
 
 ---
 
+
+## 🧩 Flow Chart (Phase 2)
+
+```mermaid
+graph TD
+    START[App Start] --> UI[User Interface]
+    UI --> CHECKPROFILE{User Profile Exists?}
+    
+    CHECKPROFILE -->|No| CREATEPROFILE[Create Profile Page]
+    CREATEPROFILE -->|User fills form| SAVEPROFILE[Save Profile to DB]
+    SAVEPROFILE --> DB[(Database)]
+    
+    CHECKPROFILE -->|Yes| LOADPROFILE[Load Profile from DB]
+    LOADPROFILE --> DB
+    
+    DB --> PROFILEREADY[Profile Ready in Session]
+    
+    PROFILEREADY --> REQUEST[User Request + user_id]
+    REQUEST --> INPUT[Input Analyzer]
+    INPUT --> PROFILEAGENT[Profile Analyzer Agent]
+    PROFILEAGENT --> ORCH[🧠 Orchestrator Agent]
+    
+    ORCH -->|Evaluate Context| DEC{Destination Provided?}
+    DEC -->|Yes: Light Research| RESEARCH[Destination Research Agent]
+    DEC -->|No: Full Research| RESEARCH
+    RESEARCH -->|Research Data| ORCH
+
+    ITINERARY <-->|Sync & Refinement| BUDGET
+    
+    ORCH -->|Parallel Task| ITINERARY[Itinerary Planner Agent]
+    ORCH -->|Parallel Task| BUDGET[Budget Analyzer Agent]
+    
+    
+    
+    ITINERARY -->|Proposed Plan| TRAVEL[Travel Coordinator Agent]
+    BUDGET -->|Budget Breakdown| TRAVEL
+    TRAVEL -->|Synthesized Plan| PLAN[Final Travel Plan]
+    
+    PLAN -->|Save Trip History| DB
+    PLAN -->|Display to User| UI
+    
+    ORCH -.->|Loop for Missing Info| REQUEST
+    
+    subgraph "Parallel Agent Operations"
+        ITINERARY
+        BUDGET
+    end
+
+    %% --- Styles ---
+    style START fill:#90EE90,stroke:#333333,stroke-width:2px,color:#000000
+    style UI fill:#FFEFD5,stroke:#333333,stroke-width:2px,color:#000000
+    style CHECKPROFILE fill:#FFD700,stroke:#333333,stroke-width:2px,color:#000000
+    style CREATEPROFILE fill:#DDA0DD,stroke:#333333,stroke-width:2px,color:#000000
+    style SAVEPROFILE fill:#BA55D3,stroke:#333333,stroke-width:2px,color:#000000
+    style LOADPROFILE fill:#87CEEB,stroke:#333333,stroke-width:2px,color:#000000
+    style PROFILEREADY fill:#FFD700,stroke:#333333,stroke-width:3px,color:#000000
+    style REQUEST fill:#FF9999,stroke:#333333,stroke-width:2px,color:#000000
+    style INPUT fill:#66B2FF,stroke:#333333,stroke-width:2px,color:#000000
+    style PROFILEAGENT fill:#9370DB,stroke:#333333,stroke-width:2px,color:#FFFFFF
+    style ORCH fill:#FFD700,stroke:#000000,stroke-width:4px,color:#000000
+    style DEC fill:#D3D3D3,stroke:#333333,stroke-width:2px,color:#000000
+    style RESEARCH fill:#99CC99,stroke:#333333,stroke-width:2px,color:#000000
+    style ITINERARY fill:#FF99CC,stroke:#333333,stroke-width:2px,color:#000000
+    style BUDGET fill:#FFFF99,stroke:#333333,stroke-width:2px,color:#000000
+    style TRAVEL fill:#66CCCC,stroke:#333333,stroke-width:2px,color:#000000
+    style PLAN fill:#FF9999,stroke:#333333,stroke-width:2px,color:#000000
+    style DB fill:#32CD32,stroke:#333333,stroke-width:2px,color:#000000
+```
+
+
 **GlobeGenie v1** — A complete agentic AI travel planner demonstrating practical LLM orchestration, budget optimization, and multi-agent coordination.
+
