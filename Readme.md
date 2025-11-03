@@ -250,8 +250,6 @@ graph TD
     ORCH -->|Parallel Task| ITINERARY[Itinerary Planner Agent]
     ORCH -->|Parallel Task| BUDGET[Budget Analyzer Agent]
     
-    
-    
     ITINERARY -->|Proposed Plan| TRAVEL[Travel Coordinator Agent]
     BUDGET -->|Budget Breakdown| TRAVEL
     TRAVEL -->|Synthesized Plan| PLAN[Final Travel Plan]
@@ -266,25 +264,26 @@ graph TD
         BUDGET
     end
 
-    %% --- Styles ---
-    style START fill:#90EE90,stroke:#333333,stroke-width:2px,color:#000000
-    style UI fill:#FFEFD5,stroke:#333333,stroke-width:2px,color:#000000
-    style CHECKPROFILE fill:#FFD700,stroke:#333333,stroke-width:2px,color:#000000
-    style CREATEPROFILE fill:#DDA0DD,stroke:#333333,stroke-width:2px,color:#000000
-    style SAVEPROFILE fill:#BA55D3,stroke:#333333,stroke-width:2px,color:#000000
-    style LOADPROFILE fill:#87CEEB,stroke:#333333,stroke-width:2px,color:#000000
-    style PROFILEREADY fill:#FFD700,stroke:#333333,stroke-width:3px,color:#000000
-    style REQUEST fill:#FF9999,stroke:#333333,stroke-width:2px,color:#000000
-    style INPUT fill:#66B2FF,stroke:#333333,stroke-width:2px,color:#000000
-    style PROFILEAGENT fill:#9370DB,stroke:#333333,stroke-width:2px,color:#FFFFFF
-    style ORCH fill:#FFD700,stroke:#000000,stroke-width:4px,color:#000000
-    style DEC fill:#D3D3D3,stroke:#333333,stroke-width:2px,color:#000000
-    style RESEARCH fill:#99CC99,stroke:#333333,stroke-width:2px,color:#000000
-    style ITINERARY fill:#FF99CC,stroke:#333333,stroke-width:2px,color:#000000
-    style BUDGET fill:#FFFF99,stroke:#333333,stroke-width:2px,color:#000000
-    style TRAVEL fill:#66CCCC,stroke:#333333,stroke-width:2px,color:#000000
-    style PLAN fill:#FF9999,stroke:#333333,stroke-width:2px,color:#000000
-    style DB fill:#32CD32,stroke:#333333,stroke-width:2px,color:#000000
+    %% --- Pastel Styles ---
+    style START fill:#C8E6C9,stroke:#333333,stroke-width:2px,color:#000000
+    style UI fill:#FFF3E0,stroke:#333333,stroke-width:2px,color:#000000
+    style CHECKPROFILE fill:#FFF9C4,stroke:#333333,stroke-width:2px,color:#000000
+    style CREATEPROFILE fill:#E1BEE7,stroke:#333333,stroke-width:2px,color:#000000
+    style SAVEPROFILE fill:#D1C4E9,stroke:#333333,stroke-width:2px,color:#000000
+    style LOADPROFILE fill:#B3E5FC,stroke:#333333,stroke-width:2px,color:#000000
+    style PROFILEREADY fill:#FFECB3,stroke:#333333,stroke-width:3px,color:#000000
+    style REQUEST fill:#FFCDD2,stroke:#333333,stroke-width:2px,color:#000000
+    style INPUT fill:#BBDEFB,stroke:#333333,stroke-width:2px,color:#000000
+    style PROFILEAGENT fill:#C5CAE9,stroke:#333333,stroke-width:2px,color:#000000
+    style ORCH fill:#FFE082,stroke:#000000,stroke-width:4px,color:#000000
+    style DEC fill:#E0E0E0,stroke:#333333,stroke-width:2px,color:#000000
+    style RESEARCH fill:#C8E6C9,stroke:#333333,stroke-width:2px,color:#000000
+    style ITINERARY fill:#F8BBD0,stroke:#333333,stroke-width:2px,color:#000000
+    style BUDGET fill:#FFF9C4,stroke:#333333,stroke-width:2px,color:#000000
+    style TRAVEL fill:#B2EBF2,stroke:#333333,stroke-width:2px,color:#000000
+    style PLAN fill:#FFCCBC,stroke:#333333,stroke-width:2px,color:#000000
+    style DB fill:#A5D6A7,stroke:#333333,stroke-width:2px,color:#000000
+
 ```
 
 
