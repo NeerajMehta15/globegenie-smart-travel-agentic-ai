@@ -129,7 +129,105 @@ def create_user_with_profile( db: Session, email: str, name: str, home_city: Opt
 
 #=============== SECTION 3: TRIP HISTORY - Save and retrieve trips ===============#
 
+def save_trip_history(
+    db: Session,
+    user_id: int,
+    destination: str,
+    trip_dates: Dict,
+    duration_days: int,
+    num_travelers: int,
+    budget_target: float,
+    total_cost: float,
+    trip_data: Optional[Dict] = None,
+    activity_summary: Optional[str] = None,
+    destination_info: Optional[Dict] = None
+) -> TripHistory:
+    """
+    Save a generated trip plan to history.
+    """
+    try:
+        # Calculate if within budget (5% tolerance)
+        within_budget = total_cost <= budget_target * 1.05
+        
+        trip = TripHistory(
+            user_id=user_id,
+            destination=destination,
+            trip_dates=trip_dates,
+            duration_days=duration_days,
+            num_travelers=num_travelers,
+            budget_target=budget_target,
+            total_cost=total_cost,
+            within_budget=within_budget,
+            trip_data=trip_data,
+            acitivity_summary=activity_summary,  # Note: keeping typo consistent with model
+            destination_info=destination_info
+        )
+        
+        db.add(trip)
+        db.commit()
+        db.refresh(trip)
+        
+        return trip
+        
+    except Exception as e:
+        db.rollback()
+        raise e
 
+
+def get_user_trips(
+    db: Session,
+    user_id: int,
+    skip: int = 0,
+    limit: int = 10
+) -> List[TripHistory]:
+    """
+    Get all trips for a specific user.
+    Returns most recent trips first.
+    """
+    return db.query(TripHistory)\
+        .filter(TripHistory.user_id == user_id)\
+        .order_by(TripHistory.created_at.desc())\
+        .offset(skip)\
+        .limit(limit)\
+        .all()
+
+
+def get_trip_by_id(db: Session, trip_id: int) -> Optional[TripHistory]:
+    """
+    Get a specific trip by its ID.
+    """
+    return db.query(TripHistory).filter(TripHistory.id == trip_id).first()
+
+
+def update_trip_feedback(
+    db: Session,
+    trip_id: int,
+    feedback_rating: Optional[str] = None,
+    feedback_text: Optional[str] = None
+) -> Optional[TripHistory]:
+    """
+    Add or update feedback for a trip.
+    """
+    trip = get_trip_by_id(db, trip_id)
+    
+    if not trip:
+        return None
+    
+    try:
+        if feedback_rating is not None:
+            trip.feedback_rating = feedback_rating
+            
+        if feedback_text is not None:
+            trip.feedback_text = feedback_text
+        
+        db.commit()
+        db.refresh(trip)
+        
+        return trip
+        
+    except Exception as e:
+        db.rollback()
+        raise e
 
 
 #============== HELPER FUNCTIONS ==============#
